@@ -24,8 +24,8 @@ class craft_params:
     self.noun_defs = True
     self.noun_self = False
 
-    self.sent_count=3
-    self.word_count=5
+    self.sent_count=5
+    self.word_count=6
     self.rel_count=10
     self.dot_count=20
 

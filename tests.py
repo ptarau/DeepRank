@@ -104,6 +104,10 @@ def t11():
   d=txt_quest('examples', 'texas', 'texas_quest')
   print('LOG',d)
 
+def t12():
+  pdf_chat_with('pdfs', 'heli',
+                about='What are preflight and postflight briefings in a training program?')
+
 def all_ts():
   for i in range(0, 10):
     f = 't' + str(i)
@@ -112,3 +116,4 @@ def all_ts():
 def qtests() :
   from deep_talk.query import t1
   t1()
+

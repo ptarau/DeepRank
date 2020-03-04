@@ -1,14 +1,40 @@
-from params import *
-import deepRank as dr
-import eval as ev
+# alternative, Python-only queary answering module
+
+from textcrafts import deepRank as dr
 from collections import defaultdict
+
+## PARAMS for Dialog Engines in query.py
+
+class query_params(dr.craft_params):
+  def __init__(self):
+    super().__init__()
+    self.corenlp = True
+    self.quiet = True
+    self.summarize = True
+    self.quest_memory = 1
+    self.max_answers = 3
+    self.repeat_answers = 'yes'
+    self.by_rank = 'no'
+    self.personalize = 20
+    self.show=False
+
+    self.sent_count = 8
+    self.word_count = 5
+    self.rel_count = 10
+    self.dot_count = 20
+
+params=query_params()
 
 def multi_dict():
   return defaultdict(set)
 
 class DialogAgent(dr.GraphMaker):
-  def __init__(self):
-    super().__init__()
+  def __init__(self,file_name = None, text = None, corenlp = False):
+    super().__init__(params = params,
+                     file_name = file_name, text = text, corenlp = corenlp)
+    self.clear_index()
+
+  def clear_index(self):
     self.source = None
     self.target = None
 
@@ -35,6 +61,7 @@ class DialogAgent(dr.GraphMaker):
     return m
 
   def index(self):
+    self.clear_index()
     if not self.source:
       self.source = self.source_index()
     if not self.target:
@@ -43,24 +70,23 @@ class DialogAgent(dr.GraphMaker):
   def stats(self):
     return (len(self.source), len(self.target))
 
-  def chat_about(self,fname,question=None):
-    sk=6
-    ak=3
-    self.load(fname)
+  def chat_about(self,question=None):
+
+    #self.load(self.fname)
     pr=self.pagerank()
     #chat(self.index()
     #for x in self.source.items() : print(x,'\n')
-    QA=DialogAgent()
 
-    summary=list(self.bestSentences(sk))
+    summary=list(self.bestSentences(self.params.sent_count))
     sents={s for s,_ in summary}
     print('SUMMARY',sents)
     dr.print_summary(summary)
     self.index()
     #print('SELF',self.stats())
     db=set(self.source).union(set(self.target))
-    #print('DB',len(db))
+    #print('DB',db)
 
+    QA = DialogAgent()
     def query(QA, text, echo=False):
       if echo: print('?--', text)
       QA.digest(text)
@@ -70,6 +96,7 @@ class DialogAgent(dr.GraphMaker):
       QA.index()
       #print('QA', QA.stats())
       qa=set(QA.source).union(set(QA.target))
+      #print('QA', qa)
       shared = { x for x in qa.intersection(db)
                    if dr.maybeWord(x) and not dr.isStopWord(x)
                }
@@ -83,14 +110,14 @@ class DialogAgent(dr.GraphMaker):
           if dr.isSent(k) : good.add(k)
 
       def inhabits(x) : return x in good
-      answers = list(self.bestSentencesByRank(ak,filter=inhabits))
+      answers = list(self.bestSentencesByRank(self.params.max_answers,filter=inhabits))
       new_answers=[(s,a) for s,a in answers if s not in sents]
       if new_answers : answers=new_answers
 
       dr.print_summary(answers)
-      if pics == 'yes':
+      if self.params.show:
         dr.query_edges_to_dot(QA)
-        self.toDot(12, dr.maybeWord, svo=True, show=True)
+        self.toDot(self.params.dot_count, dr.maybeWord, svo=True, show=self.params.show)
 
     if isinstance(question, list):
       for q in question:
@@ -108,14 +135,18 @@ def chat(fname) :
   DialogAgent().chat_about("examples/"+fname+".txt")
 
 def dialog_about(fname,query=None) :
-  DialogAgent().chat_about(fname+".txt",question=query)
+  DialogAgent(file_name=fname+".txt").chat_about(question=query)
 
 def ranked_txt_quest(Folder, FNameNoSuf, QuestFileNoSuf):
   Q = []
   qfname = Folder + "/" + QuestFileNoSuf + ".txt"
-  qs = list(ev.file2seq(qfname))
+  qs = list(file2seq(qfname))
   print('qs',qs)
   dialog_about(Folder+"/"+FNameNoSuf,qs)
+
+def file2seq(fname):
+  with open(fname, 'r') as f:
+    for l in f: yield l.strip()
 
 def t0():
   dialog_about('examples/tesla',
@@ -181,7 +212,11 @@ def t9():
                "What happens to light in the presence of gravitational fields?")
 
 
-def go() :
+def t11() :
+  ranked_txt_quest('examples','texas','texas_quest')
+
+  
+def qgo() :
   t1()
   t2()
   t3()
@@ -191,10 +226,11 @@ def go() :
   t7()
   t8()
   t9()
+  t11()
   t0()
 
 if __name__ == '__main__'  :
   pass
-  #t4()
+  t11()
 
 

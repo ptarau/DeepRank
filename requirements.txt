@@ -1,0 +1,10 @@
+stanfordnlp>=0.2.0
+graphviz>=0.13
+nltk>=3.4.5
+networkx>=2.3
+wordcloud>=1.6
+pyswip
+pytalk
+
+
+

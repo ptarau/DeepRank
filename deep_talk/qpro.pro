@@ -180,7 +180,7 @@ search_answer(Id):-
 search_answer(SentId):-
   distinct(SentId,search_answer0(SentId)).
 
-
+search_answer0(SentId):-match_ners(SentId).
 search_answer0(SentId):-distinct(match_relevant(SentId)).
 search_answer0(SentId):-distinct(match_edges(SentId)).
 search_answer0(SentId):-distinct(match_svo(SentId)).
@@ -205,7 +205,7 @@ match_relevant(SentId):-
        maplist(to_lemma,Ws,Ls),
        append(Ws,Ls,WLs0),sort(WLs0,WLs),
        intersection(Xs,WLs,Is),
-       length(Is,L),L>1,    
+       length(Is,L),L>=2,
        findall(R,(member(I,Is),member(R-I,RXs)),Rs),    
        sumlist(Rs,R0),R is L*R0
      ),
@@ -218,7 +218,6 @@ match_relevant(SentId):-
    % pick the best MaxAns sentence ids
    %findnsols(MaxAns,N,member(_-N,Ranked),Ids),
    %!.
-   
    
 
 
@@ -235,7 +234,9 @@ build_answer(SentIds,Answer):-
 nice_sent(N,Sent):-
   sent(N,Ws1),
   subst('-LSB-','(',Ws1,Ws2),
-  subst('-RSB-',')',Ws2,Ws),
+  subst('-RSB-',')',Ws2,Ws3),
+   subst('-LRB-','(',Ws3,Ws4),
+  subst('-RRB-',')',Ws4,Ws),
   intersperse([N,':'|Ws],' ',SWs),
   atomic_list_concat(SWs,Sent).
 
@@ -348,6 +349,52 @@ is_defined(F/N):-
 % counts number of clauses of given predicate F/N
 cls_count(F/N,K):-functor(C,F,N),predicate_property(C, number_of_clauses(K)).
 
+% NER logic
+
+match_ners(S):-is_defined(match_custom_ners/1),match_custom_ners(S).
+match_ners(S):-
+  is_defined(ner/2),
+  once((query_w2l(_,L,_),wh_word(L))),
+  findall(W,(query_w2l(W,_L,Tag),good_tag(Tag)),Ws),
+  writeln(Ws),
+  call(L,Ws,S).
+
+
+
+wh_word(where).
+wh_word(when).
+wh_word(who).
+wh_word(many).
+
+
+
+who(S):-who([_],S).
+who(KWs,S):-wh(['PERSON','ORGANIZATION','TITLE'],KWs,S).
+
+many(S):-many([_],S).
+many(KWs,S):-wh(['NUMBER', 'ORDINAL', 'MONEY'],KWs,S).
+
+when(S):-when([_],S).
+when(KWs,S):-wh(['DATE','TIME','DURATION'],KWs,S).
+
+where(S):-where([_],S).
+where(KWs,S):-wh(['LOCATION','CITY','COUNTRY','STATE_OR_PROVINCE'],KWs,S).
+
+wh(Tags,S):-wh(Tags,[_],S).
+wh(Tags,KWs,S):-distinct(S,wh0(Tags,KWs,S)).
+
+wh0(Tags,KWs,S):-
+  ner(S,Ps),
+  member(Tag,Tags),
+  member((_Pos,_LW,Tag),Ps),
+  sent(S,Ws),
+  shares_kwords(1,KWs,Ws,_).
+
+shares_kwords(K,Us,Vs,Is):-
+  intersection(Us,Vs,Is),
+  length(Is,L),L>=K.
+
+
 % testing for all answers
 
 test(FNameNoSuf):-
@@ -362,8 +409,8 @@ test:-is_loaded(FNameNoSuf),test(FNameNoSuf).
 ppp(X):-writeln(X).
 
 t0:-test('examples/tesla').
-t1:-test('examples/hindenburg').
-t2:-test('examples/bfr').
+t1:-test('examples/bfr').
+t2:-test('examples/hindenburg').
 t3:-test('examples/const').
 t4:-test('examples/summary').
 t5:-test('examples/heaven').

@@ -1,19 +1,50 @@
-from nltk.parse.corenlp import CoreNLPParser
-
 from pyswip import *
 from pyswip.easy import *
 from graphviz import Digraph
-from sim import *
-import deepRank as dr
 import subprocess
-from sim import *
-import eval as ev
-from params import *
+
+from textcrafts import deepRank as dr
+from textcrafts.sim import *
+from textcrafts.parser_api import *
+
+
+## PARAMS for Dialog Engines qpro.py and query.py
+
+class talk_params(dr.craft_params):
+  def __init__(self):
+    super().__init__()
+    self.corenlp = False
+    self.quiet = True
+    self.summarize = True
+    self.quest_memory = 1
+    self.max_answers = 3
+    self.repeat_answers = 'yes'
+    self.by_rank = 'yes'
+    self.personalize = 50
+    self.show=True
+    self.cloud=36
+
+params=talk_params()
+
+####  start config aprameters ######
+
+# finds absolute file name of Prolog companion qpro.pro
+def pro() :
+  if __name__ == '__main__':
+    # assume we just test this locally on its own
+    return './qpro.pro'
+  else :
+    # assuming it is imported from a package and then run
+    # to test this - possibly adapt after setup done
+    f=__file__
+    return f[:len(f)-3]+".pro"
+
+####  end config aprameters ######
 
 
 def say(what) :
   print(what)
-  if not quiet : subprocess.run(["say", what])
+  if not params.quiet : subprocess.run(["say", what])
 
 def go() :
   #fNameNoSuf='examples/relativity'
@@ -22,7 +53,7 @@ def go() :
   print('dialog_about',fNameNoSuf)
   dialog_about(fNameNoSuf,None)
 
-# generates Prolog facts dataset
+# generates Prolog facts dataset - depends on eval.py
 
 def gen_pro_dataset() :
   fd=ev.doc_dir
@@ -36,44 +67,39 @@ def gen_pro_dataset() :
     export_to_prolog(txtf,prof)
 
 # interactive dialog
-def talk_about(fNameNoSuf):
-  return dialog_about(fNameNoSuf,None)
+def talk_about(fNameNoSuf,params=params):
+  return dialog_about(fNameNoSuf,None,params=params)
 
-def dialog_about(fNameNoSuf,question) :
-  gm=export_to_prolog(fNameNoSuf)
+def dialog_about(fNameNoSuf,question,params=params) :
+  gm=export_to_prolog(fNameNoSuf,params=params)
+  if params.show: gm.kshow(params.cloud,file_name="cloud.pdf",show=True)
 
-  if summarize :
-    wk,vk,sk = 6,6,3
-    dr.print_keys(gm.bestWords(wk))
-    dr.print_rels(gm.bestSVOs(vk))
-    print('SUMMARY')
-    dr.print_summary(gm.bestSentences(sk))
-
+  if params.summarize :
+    print(gm)
   prolog = Prolog()
-  sink(prolog.query("consult('qpro.pro')"))
+  sink(prolog.query("consult('" + pro() + "')"))
   sink(prolog.query("load('"+fNameNoSuf+"')"))
-  qgm=dr.GraphMaker()
+  qgm=dr.GraphMaker(params=params)
+
 
   M = []
   log=[]
   if isinstance(question,list):
     for q in question :
       say(q)
-      process_quest(prolog,q, M, gm, qgm, fNameNoSuf,log)
+      process_quest(prolog,q, M, gm, qgm, fNameNoSuf,log,params=params)
   elif question :
     say(question)
     print('')
-    dialog_step(prolog,question,gm,qgm,fNameNoSuf,log)
+    dialog_step(prolog,question,gm,qgm,fNameNoSuf,log,params=params)
   else :
     while(True) :
       question=input('?-- ')
       if not question : break
-      process_quest(prolog,question, M, gm, qgm, fNameNoSuf,log)
+      process_quest(prolog,question, M, gm, qgm, fNameNoSuf,log,params=params)
   return process_log(log)
 
 def process_log(log) :
-  #print('LOG:', log)
-  #with open(logfile,'w') as lf :
   l=len(log)
   qa_log=dict()
   for i in range(l) :
@@ -84,21 +110,21 @@ def process_log(log) :
     qa_log[i]=ls
   return qa_log
 
-def process_quest(prolog,question,M,gm,qgm,fNameNoSuf,log) :
+def process_quest(prolog,question,M,gm,qgm,fNameNoSuf,log,params=params) :
   question = question + ' '
   if question in M:
     i = M.index(question)
     M.pop(i)
   M.append(question)
-  if quest_memory>0 : M=M[-quest_memory:]
+  if params.quest_memory>0 : M=M[-params.quest_memory:]
   Q=reversed(M)
   question = ''.join(Q)
-  dialog_step(prolog, question, gm, qgm, fNameNoSuf,log)
+  dialog_step(prolog, question, gm, qgm, fNameNoSuf,log,params=params)
 
 
 # step in a dialog agent based given file and question
-def dialog_step(prolog,question,gm,qgm,fNameNoSuf,log) :
-    query_to_prolog(question,gm,qgm,fNameNoSuf)
+def dialog_step(prolog,question,gm,qgm,fNameNoSuf,log,params=params) :
+    query_to_prolog(question,gm,qgm,fNameNoSuf,params=params)
     rs=prolog.query("ask('" + fNameNoSuf + "'"  + ",Key)")
     answers=[pair['Key'] for pair in rs]
     log.append((question,answers))
@@ -107,13 +133,15 @@ def dialog_step(prolog,question,gm,qgm,fNameNoSuf,log) :
       for answer in answers :
         say(answer)
     print('')
-      
-   
+
+
 def sink(generator) :
   for _ in generator : pass
 
 
 def getNERs(ws):
+  from nltk.parse.corenlp import CoreNLPParser
+  from textcrafts.corenlp_api import parserURL
   parser = CoreNLPParser(url=parserURL, tagtype='ner')
   ts = parser.tag(ws)
   for t in ts :
@@ -121,15 +149,12 @@ def getNERs(ws):
       yield t
 
 
-def ner_test():
-  print(list(
-    getNERs(['today','MIT', 'Stanford','London','Austin, Texas', 'Permian Basin'])))
-    
-# sends dependency triples to Prolog, as rececived from Parser  
+
+# sends dependency triples to Prolog, as rececived from Parser
 def triples_to_prolog(pref,qgm,f) :
     ctr=0
-    for g in qgm.gs :
-      for x in g.triples() :
+    for ts in qgm.triples() :
+      for x in ts:
         (fr,ft),r,(to,tt)=x
         print(pref+'dep',end='',file=f)
         print((ctr,fr,ft,r,to,tt),end='',file=f)
@@ -137,15 +162,21 @@ def triples_to_prolog(pref,qgm,f) :
       ctr+=1
 
 def sents_to_prolog(pref, qgm, f):
-  s_ws_gen=dr.sent_words(qgm)
+  #s_ws_gen=dr.sent_words(qgm)
+  s_ws_gen=enumerate(qgm.words())
   for s_ws in s_ws_gen:
     print(pref + 'sent', end='', file=f)
     print(s_ws, end='', file=f)
     print('.', file=f)
 
 
+
 def ners_to_prolog(pref, qgm, f):
-  s_ws_gen=dr.sent_words(qgm)
+
+  if not params.corenlp :
+    return
+  #print("GENERATING NERS")
+  s_ws_gen=enumerate(qgm.words())
   for s_ws in s_ws_gen:
     s,ws=s_ws
     ners=list(enumerate(getNERs(ws)))
@@ -155,22 +186,23 @@ def ners_to_prolog(pref, qgm, f):
       print('.', file=f)
 
 
-# sends summaries to Prolog    
+
+# sends summaries to Prolog
 def sums_to_prolog(pref,k,qgm,f) :
     if pref : return
     for sent in qgm.bestSentences(k) :
       print('summary',end='',file=f)
       print(sent,end='',file=f)
-      print('.',file=f)   
- 
-# sends keyphrases to Prolog    
+      print('.',file=f)
+
+# sends keyphrases to Prolog
 def keys_to_prolog(pref,k,qgm,f) :
     if pref : return
     for kw in qgm.bestWords(k) :
       print(pref+"keyword('",end='',file=f)
       print(kw,end="')",file=f)
-      print('.',file=f)   
-      
+      print('.',file=f)
+
 # sends edges of the graph to Prolog
 def edges_to_prolog(pref,qgm,f) :
     for ek in qgm.edgesInSent() :
@@ -180,7 +212,7 @@ def edges_to_prolog(pref,qgm,f) :
       print(pref+'edge',end='',file=f)
       print(e,end='',file=f)
       print('.',file=f)
-    if pics=='yes' and pref :
+    if params.show and pref :
       dr.query_edges_to_dot(qgm)
 
 # generic Prolog predicate maker
@@ -193,27 +225,27 @@ def facts_to_prolog(pref,name,facts,f) :
     print('.',file=f)
   print('',file=f)
 
-    
+
 # sends the computed ranks to Prolog
 def ranks_to_prolog(pref,qgm,f) :
     ranks=qgm.pagerank()
     facts_to_prolog(pref, 'rank', ranks, f)
 
 
-# sends the words to lemmas table to Prolog      
+# sends the words to lemmas table to Prolog
 def w2l_to_prolog(pref,qgm,f) :
     tuples=qgm.words2lemmas
     for r in tuples :
       print(pref+'w2l',end='',file=f)
       print(r,end='',file=f)
-      print('.',file=f)   
+      print('.',file=f)
 
 # sends svo realtions to Prolog
 def svo_to_prolog(pref,qgm,f) :
     rs=qgm.bestSVOs(100)
     facts_to_prolog(pref, 'svo', rs, f)
-      
-# sends a similarity relation map to Prolog    
+
+# sends a similarity relation map to Prolog
 def sims_to_prolog(pref,gm,qgm,f) :
   #print(qgm.words)
   for qs in qgm.words2lemmas :
@@ -226,7 +258,7 @@ def sims_to_prolog(pref,gm,qgm,f) :
           print((ql,qt,cl,ct),end='',file=f)
           print('.',file=f)
 
-# sends a similarity relation map to Prolog    
+# sends a similarity relation map to Prolog
 def rels_to_prolog(pref,gm,qgm,f) :
   def sentId(touple) :
     return touple[3]
@@ -257,32 +289,33 @@ def rels_to_prolog(pref,gm,qgm,f) :
         rels.add((h,'part_of',ql,-ws[h]))
     for h in holos :
       if h in ws :
-        rels.add((ql,'part_of',h,-ws[h]))  
+        rels.add((ql,'part_of',h,-ws[h]))
   rels=sorted(rels,key=sentId,reverse=True)
   facts_to_prolog(pref,'rel',rels,f)
 
 # exporting to Prolog files needed to answer query
 
-def export_to_prolog(fNameNoSuf,OutF=None) :
-  gm=dr.GraphMaker()
+def export_to_prolog(fNameNoSuf,OutF=None,params=params) :
+  gm=dr.GraphMaker(params=params)
   gm.load(fNameNoSuf+'.txt')
   if not OutF :
     OutF = fNameNoSuf
-  to_prolog('',gm,gm,OutF)
+  to_prolog('',gm,gm,OutF,params=params)
   return gm
 
-def params_to_prolog(pref,f) :
-  rels=[('quest_memory',quest_memory),
-        ('max_answers', max_answers),
-        ('repeat_answers',repeat_answers),
-        ('personalize',personalize),
-        ('by_rank', by_rank)
+def params_to_prolog(pref,f,params=params) :
+  rels=[('quest_memory',params.quest_memory),
+        ('max_answers', params.max_answers),
+        ('repeat_answers',params.repeat_answers),
+        ('personalize',params.personalize),
+        ('by_rank', params.by_rank)
         ]
   facts_to_prolog(pref, 'param', rels, f)
 
 def personalize_for_query(gm, qgm, sk, wk):
     query_dict = dr.pers_dict(qgm)
     ranks = gm.rerank(query_dict)
+    if params.show: gm.kshow(params.cloud, file_name="quest_cloud.pdf", show=True)
 
     def ranked(xs):
       # return xs
@@ -296,11 +329,11 @@ def personalize_for_query(gm, qgm, sk, wk):
     # print('WORDS',words)
     return (sents, words)
 
-# process a query and send it to Prolog 
-def query_to_prolog(text,gm,qgm,fNameNoSuf) :
+# process a query and send it to Prolog
+def query_to_prolog(text,gm,qgm,fNameNoSuf,params=params) :
   qgm.digest(text)
   qfName=fNameNoSuf+'_query'
-  to_prolog('query_',gm,qgm,qfName)
+  to_prolog('query_',gm,qgm,qfName,params=params)
 
 def personalized_to_prolog(pref,gm,qgm,personalize,f) :
   count=personalize
@@ -314,194 +347,110 @@ def personalized_to_prolog(pref,gm,qgm,personalize,f) :
 # small files are used that the pyswip activated Prolog will answer
 # the pref='query_' marks file names with query_, while
 # the empty prefix pref='' marks realtions describing a document
-def to_prolog(pref,gm,qgm,fNameNoSuf) :
+def to_prolog(pref,gm,qgm,fNameNoSuf,params=params) :
   with open(fNameNoSuf+'.pro','w') as f :
     triples_to_prolog(pref,qgm,f)
+    #print(' ',file=f)
+    edges_to_prolog(pref,qgm,f)
     print(' ',file=f)
-    edges_to_prolog(pref,qgm,f)    
+    ranks_to_prolog(pref,qgm,f)
     print(' ',file=f)
-    ranks_to_prolog(pref,qgm,f)  
+    w2l_to_prolog(pref,qgm,f)
     print(' ',file=f)
-    w2l_to_prolog(pref,qgm,f)   
-    print(' ',file=f)
-    sents_to_prolog(pref,qgm,f) 
+    sents_to_prolog(pref,qgm,f)
     print(' ',file=f)
     ners_to_prolog(pref, qgm, f)
     print(' ', file=f)
-    svo_to_prolog(pref,qgm,f)   
-    print(' ',file=f) 
+    svo_to_prolog(pref,qgm,f)
+    print(' ',file=f)
     if pref : # query only
         #sims_to_prolog(pref,gm,qgm,f)
         rels_to_prolog(pref,gm,qgm,f) # should be after svo!
-        if personalize>0 :
-           personalized_to_prolog(pref,gm,qgm,personalize,f)
-        params_to_prolog(pref, f)
+        if params.personalize>0 :
+           personalized_to_prolog(pref,gm,qgm,params.personalize,f)
+        params_to_prolog(pref, f,params=params)
 
     else : # document only
         sums_to_prolog(pref,10,qgm,f)
-        print(' ',file=f)  
+        print(' ',file=f)
         keys_to_prolog(pref,10,qgm,f)
         print(' ',file=f)
 
+# turns a sequence/generator into a file, one line per item yield
+def seq2file(fname,seq) :
+  xs=map(str,seq)
+  ys=interleave_with('\n','\n',xs)
+  text=''.join(ys)
+  string2file(fname,text)
 
-def ptest():
-  f = 'examples/bfr'
-  qf = f + '_query.pro'
-  gm = export_to_prolog(f)
-  prolog = Prolog()
-  prolog.consult(f + '.pro')
-  q = prolog.query('listing(dep)')
-  next(q)
-  q.close()
-  qgm = dr.GraphMaker()
-  query_to_prolog('What is the BFR?', gm, qgm, f)
-  prolog.consult(qf)
-  q = prolog.query('listing(query_sent)')
-  next(q)
-  q.close()
+# turns a file into a (string) generator yielding each of its lines
+def file2seq(fname) :
+   with open(fname,'r') as f :
+     for l in f : yield l.strip()
 
+# turns a string into given file
+def string2file(fname,text) :
+  with open(fname,'w') as f :
+    f.write(text)
 
-def all_ts():
-  for i in range(0, 10):
-    f = 't' + str(i)
-    eval(f + "()")
+# turns content of file into a string
+def file2string(fname) :
+  with open(fname,'r') as f :
+    s = f.read()
+    return s.replace('-',' ')
+
+# interleaves list with separator
+def interleave(sep,xs) :
+  return interleave_with(sep,None,xs)
+
+def pos2tag(pos) :
+  if not pos :
+    return None
+  c=pos[0]
+  if c is 'N' : return 'n'
+  elif c is 'V' : return 'v'
+  elif c is 'J' : return 'a'
+  elif c is 'R' : return 'r'
+  else : return None
 
 
 def chat(FNameNoSuf):
   return dialog_about('examples/' + FNameNoSuf, None)
 
 
-def pdf_chat(FNameNoSuf):
-  return  pdf_chat_with("pdfs", FNameNoSuf)
+def pdf_chat(FNameNoSuf,params=params):
+  return  pdf_chat_with("pdfs", FNameNoSuf,params=params)
 
 
-def pdf_chat_with(Folder, FNameNoSuf, about=None):
+def pdf_chat_with(Folder, FNameNoSuf, about=None,params=params):
   fname = Folder + "/" + FNameNoSuf
   dr.pdf2txt(fname + ".pdf")
-  return  dialog_about(fname, about)
+  return  dialog_about(fname, about,params=params)
 
 
-def pdf_quest(Folder, FNameNoSuf, QuestFileNoSuf):
+def pdf_quest(Folder, FNameNoSuf, QuestFileNoSuf,params=params):
   Q = []
   qfname = Folder + "/" + QuestFileNoSuf + ".txt"
-  qs = list(ev.file2seq(qfname))
-  return  pdf_chat_with(Folder, FNameNoSuf, about=qs)
+  qs = list(file2seq(qfname))
+  return  pdf_chat_with(Folder, FNameNoSuf, about=qs,params=params)
 
 
-def txt_quest(Folder, FNameNoSuf, QuestFileNoSuf):
+def txt_quest(Folder, FNameNoSuf, QuestFileNoSuf,params=params):
   Q = []
   qfname = Folder + "/" + QuestFileNoSuf + ".txt"
-  qs = list(ev.file2seq(qfname))
+  qs = list(file2seq(qfname))
   # print('qs',qs)
-  return  dialog_about(Folder + "/" + FNameNoSuf, qs)
+  return  dialog_about(Folder + "/" + FNameNoSuf, qs,params=params)
 
-
-def q0():
-  d=txt_quest('examples', 'tesla', 'tesla_quest')
-  print('LOG',d)
-
-
-def q1():
-  d=txt_quest('examples', 'bfr', 'bfr_quest')
-  print('LOG',d)
-
-
-
-def t0():
-  dialog_about('examples/tesla',
-               "How I have a flat tire repaired?")
-
-
-def t0a():
-  dialog_about('examples/tesla',
-      "How I have a flat tire repaired?  \
-      Do I have Autopilot enabled? \
-      How I navigate to work? \
-      Should I check tire pressures?")
-
-
-def t1():
-  d=dialog_about('examples/bfr',
-               "What space vehicles SpaceX develops?")
-  print('Sentece IDs: ',d)
-
-
-def t2():
-  # dialog_about('examples/bfr')
-  dialog_about('examples/hindenburg',
-               "How did the  fire start on the Hindenburg?")
-
-
-def t3():
-  dialog_about('examples/const',
-  # "How many votes are needed for the impeachment of a President?"
-        'How can a President be removed from office?'
-  )
-
-
-def t4():
-  dialog_about('examples/summary',
-               "How we obtain summaries and keywords from dependency graphs?")
-
-
-def t5():
-  dialog_about('examples/heaven',
-               "What does the Pope think about heaven?")
-
-
-def t6():
-  dialog_about('examples/einstein',
-               "What does quantum theory tell us about our \
-                description of reality for an observer?")
-
-
-def t7():
-  dialog_about('examples/kafka',
-               # "What does the doorkeeper say about entering?"
-               "Why does K. want access to the law at any price?"
-               )
-
-
-def t8():
-  dialog_about('examples/test',
-               "Does Mary have a book?")
-
-
-def t9():
-  dialog_about('examples/relativity',
-               "What happens to light in the presence of gravitational fields?")
-
-
-def t10():
-  pdf_chat_with('pdfs', 'textrank',
-                about='What are the applications of TextRank? \
-      How sentence extraction works? What is the role of PageRank?')
-
-
-def t11():
-  with open('examples/texas_quest.txt', 'r') as f:
-    qs = list(l[:-1] for l in f)
-    return dialog_about('examples/' + "texas",qs)
-
-
-def p1():
-  fd = ev.doc_dir
-  fn = "1039329"
-  fname = fd + fn
-  export_to_prolog(fname, fd + "pro/" + fn)
 
 
 ppp=print
 
 #all_ts()
 
-'''
-todo:
-
-remove: svo(x,rel,x)
-
-
-'''
+print('prolog companion',pro())
 
 if __name__ == '__main__'  :
   pass
+
+

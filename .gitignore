@@ -176,14 +176,35 @@ fabric.properties
 
 stanford-corenlp-full-2018-10-05/
 
-examples/*.pro
+*.gv
+*.gv.pdf
+examples/*.json
 examples/*.gv
 examples/*.gv.pdf
-test/keys/*
-test/abs/*
+examples/*_cloud.pdf
+examples/*.pro
+
+
+pdfs/*.pro
+pdfs/*.gv
+pdfs/*.gv.pdf
+
+*.json
 *.gv
 *.gv.pdf
 
+pdfs/*.pro
+pdfs/*.gv
+pdfs/*.gv.pdf
 
 
+
+*.gv
+*.gv.pdf
+
+temp_docs/*
+test_docs/*
+
+bak
+bak/*
 

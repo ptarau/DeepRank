@@ -1,0 +1,16 @@
+Recursive ranking algorithms applied to text graphs have enabled extraction of keyphrases, summaries and relations. Their effectiveness comes from the holistic view they shed on the interconnections between text units  acting as recommenders for the most relevant ones. One step further, we build our text graphs with help from deep-learning based, highly accurate dependency parsers.  We reorganize dependency graphs to focus on the most relevant content elements of a sentence, integrate sentence identifiers as graph nodes and after ranking the graph we take advantage of the implicit semantic information that dependency links  bring to prioritize the results of text-mining queries.
+
+On top of the graph-based natural language processing  module we design a logic-based, voice-enabled dialog engine that explores interactively a ranked fact database extracted from a text document.
+Working on these facts and their inferred consequences, the dialog engine specializes the text graph with respect to a query and its short-term memory context and it reveals interactively the document's most relevant content elements, refined into a naturally sounding narrative with help from a deep-learning based content transformer. 
+
+We plan to release the  results of this research project as open-source software designed to be easily integrated into other academic and industrial projects. 
+
+
+Building our text graphs by reorganizing graph provided by dependency parsers exploits synergies between deep neural network-based machine learning and graph-based natural language processing. Likewise, our dialog engine integrates symbolic inference mechanisms with a deep-learning based content transformer. Going beyond the usual evaluation mechanisms for summary, keyphrase and relation extraction, the effectiveness of the proposed approach will be evaluated by statistics on the user experience with the integrated system and feed-back from the practical applications of our voice-enabled dialog engine.
+
+
+The logic-based dialog engine will support spoken interaction with a conversational agent that exposes salient content of the document driven by the user's interest. Its applications range from assistive technologies to visually challenged people, voice interaction with user manuals, teaching from K-12 to graduate level and interactive information retrieval from complex technical or legal documents.
+
+Improved keyphrase, summary and relation extraction will help managing the information overload faced by today's society. Extension to multi-document collections by aggregation of highest-ranked elements of single-document text graphs will provide quick understanding of emerging technologies by researchers or business analysts. Availability of dependency parsers for several widely-spoken languages makes our algorithms usable worldwide.
+
+A significant number of students belonging to underrepresented groups are enrolled in the undergraduate, MSc and PhD  program at our department and we will prioritize recruitment for the research assistantship founded by this project of one of these students, given comparable skill sets. Broad dissemination of the resulting artifacts will be ensured by our commitment to fully replicable research and code repositories made available under open source licenses.

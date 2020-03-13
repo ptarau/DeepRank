@@ -395,6 +395,39 @@ shares_kwords(K,Us,Vs,Is):-
   length(Is,L),L>=K.
 
 
+% transitive closure for relational reasoning
+
+
+call_svo(A,Rel,B,Id):-(svo(A,Rel,B,Ids);svo(B,Rel,A,Ids)),member(Id,Ids).
+
+tc_search(K,Word,Rels,Sent):-
+  must_be(list,Rels),
+  distinct(Id,(
+      tc(K,Word,Rels,_RelatedWord,res(_Steps,Id,_Path))
+    )
+  ),
+  nice_sent(Id,Sent).
+
+tc(K,A,Rels,C,Res):-tc(A,Rels,C,[],K,_,Res).
+
+tc(A,Rels,C,Xs,SN1,N2,Res) :-
+  succ(N1,SN1),
+  member(Rel,Rels),
+  call_svo(A,Rel,B,Id),
+  not(memberchk(B-_,Xs)),
+  tc1(B,Rels,C,[A-Rel|Xs],Id,N1,N2,Res).
+
+tc1(B,_Rels,B,Xs,Id,N,N,res(N,Id,Xs)):-nonvar(Id).
+tc1(B,Rels,C,Xs,_,N1,N2,Res) :-
+   tc(B,Rels,C,Xs,N1,N2,Res).
+
+tc2res(K,A,Rels,B,res(Steps,Id,Path)):-
+  distinct(A+B+End+Id,tc(A,Rels,B,[],K,End,res(N,Id,RevPath))),
+  Steps is K-N,
+  reverse(RevPath,Path).
+
+
+
 % testing for all answers
 
 test(FNameNoSuf):-

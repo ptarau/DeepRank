@@ -100,6 +100,11 @@ def test12():
     return gm
 
 
+def test13():
+  gm = runWithFilter('examples/red.txt')
+  return gm
+
+
 def testx():
     gm = GraphMaker(text='The cat sits. The dog barks.')
     for e in gm.triples():
@@ -131,4 +136,4 @@ def go() :
 
 if __name__=='__main__' :
   #print('TESTING')
-  print(test1())
+  print(test13())

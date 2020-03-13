@@ -108,12 +108,18 @@ def t12():
   pdf_chat_with('pdfs', 'heli',
                 about='What are preflight and postflight briefings in a training program?')
 
+def t13():
+  d=txt_quest('examples', 'red', 'red_quest')
+  print('LOG',d)
+
 def all_ts():
-  for i in range(0, 10):
+  for i in range(0, 13):
     f = 't' + str(i)
     eval(f + "()")
 
 def qtests() :
   from deep_talk.query import t1
-  t1()
+  t13()
 
+if __name__=='__main__' :
+  qtests()

@@ -19,7 +19,7 @@ class talk_params(dr.craft_params):
     self.quest_memory = 1
     self.max_answers = 3
     self.repeat_answers = 'yes'
-    self.by_rank = 'yes'
+    self.by_rank = 'no'
     self.personalize = 50
     self.show=True
     self.cloud=36

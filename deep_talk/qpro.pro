@@ -1,5 +1,7 @@
 :- dynamic(old_answer/1).
 
+trace(0).
+
 load_plugins:-  
   PF='plugins.pro',
   (exists_file(PF)->consult(PF);nb_setval(plugins,false)).
@@ -52,7 +54,9 @@ ask(FNameNoSuf,Answer):-
   consult(F),
   query_param(max_answers,MaxAnswers),
   show_query,
-  answer(MaxAnswers,Answer).
+  answer(MaxAnswers,Answer),
+  ppp('!!! answer':Answer),
+  true.
 
 show_query:-
   listing(query_sent).
@@ -126,7 +130,7 @@ match_svo(K):-
   ).
 match_svo(I):-
   is_defined(svo/4),
-  in_focus_at(0,W,WT),
+  distinct(in_focus_at(0,W,WT)),
   good_tag(WT),
   ( W=S,svo(S,_,_,I)
   ; W=O,svo(_,_,O,I)
@@ -158,12 +162,12 @@ personalize:-
 
 % collects MaxAns highest ranked answers
 answer(MaxAns,Answer):-
-  findnsols(MaxAns,Id,fresh_answer(Id),Ids),
+  findnsols(MaxAns,Id-Algo,fresh_answer(Id,Algo),Ids),
   !,
   build_answer(Ids,Answer).
 
-fresh_answer(Id):-
-  search_answer(Id),
+fresh_answer(Id,Algo):-
+  search_answer(Id,Algo),
   ( query_param(repeat_answers,yes)->true
   ; old_answer(Id)->fail
   ; assertz(old_answer(Id))
@@ -172,18 +176,18 @@ fresh_answer(Id):-
 % builds a stream of answers using several search algorithms
 
 
-search_answer(Id):-
+search_answer(Id,Algo):-
    personalize,
    !,
-   distinct(Id,search_answer0(Id)),
+   distinct(Id,search_answer0(Id,Algo)),
    query_pers_sents(Id,_).
-search_answer(SentId):-
-  distinct(SentId,search_answer0(SentId)).
+search_answer(SentId,Algo):-
+  distinct(SentId,search_answer0(SentId,Algo)).
 
-search_answer0(SentId):-match_ners(SentId).
-search_answer0(SentId):-distinct(match_relevant(SentId)).
-search_answer0(SentId):-distinct(match_edges(SentId)).
-search_answer0(SentId):-distinct(match_svo(SentId)).
+search_answer0(SentId,ner):-distinct(match_ners(SentId)).
+search_answer0(SentId,relevant):-distinct(match_relevant(SentId)).
+search_answer0(SentId,edges):-distinct(match_edges(SentId)).
+search_answer0(SentId,svo):-distinct(match_svo(SentId)).
 
 % matches using ranks in both query and matching data
 match_relevant(SentId):-
@@ -227,8 +231,9 @@ build_answer(SentIds,Answer):-
    ; sort(SentIds,SortedNs)
    ),
    % fuse words associated to sentence ids into atomic answers
-   member(N,SortedNs),
+   member(N-Algo,SortedNs),
    nice_sent(N,Sent),
+   ppp(algorithm_for(N,Algo)),
    Answer=Sent.
 
 nice_sent(N,Sent):-
@@ -356,7 +361,7 @@ match_ners(S):-
   is_defined(ner/2),
   once((query_w2l(_,L,_),wh_word(L))),
   findall(W,(query_w2l(W,_L,Tag),good_tag(Tag)),Ws),
-  writeln(Ws),
+  %writeln(Ws),
   call(L,Ws,S).
 
 
@@ -398,15 +403,18 @@ shares_kwords(K,Us,Vs,Is):-
 % transitive closure for relational reasoning
 
 
-call_svo(A,Rel,B,Id):-(svo(A,Rel,B,Ids);svo(B,Rel,A,Ids)),member(Id,Ids).
+call_svo(A,Rel,B,Id):-svo(A,Rel,B,Id);svo(B,Rel,A,Id).
 
-tc_search(K,Word,Rels,Sent):-
+tc_search(K,Word,Id):-
+  length(Rels,K),
+  tc_search(K,Word,Rels,Id).
+
+tc_search(K,Word,Rels,Id):-
   must_be(list,Rels),
   distinct(Id,(
       tc(K,Word,Rels,_RelatedWord,res(_Steps,Id,_Path))
     )
-  ),
-  nice_sent(Id,Sent).
+  ).
 
 tc(K,A,Rels,C,Res):-tc(A,Rels,C,[],K,_,Res).
 
@@ -439,7 +447,7 @@ test(FNameNoSuf):-
 
 test:-is_loaded(FNameNoSuf),test(FNameNoSuf).
 
-ppp(X):-writeln(X).
+ppp(X):-trace(T),T>0->writeln(X);true.
 
 t0:-test('examples/tesla').
 t1:-test('examples/bfr').
@@ -451,6 +459,16 @@ t6:-test('examples/einstein').
 t7:-test('examples/kafka').
 t8:-test('examples/test').
 t9:-test('examples/relativity').
-  
+t10:-test('examples/textrank').
+t11:-test('examples/texas').
+t12:-test('examples/heli').
+t13:-test('examples/red').
 
 
+all_ts:- do((
+  between(0,13,I),
+  atom_concat(t,I,G),
+  writeln('-----------------------------------'),
+  writeln(G),
+  call(G)
+  )).

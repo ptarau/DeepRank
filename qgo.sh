@@ -1,5 +1,1 @@
-pushd .
-cd tests
-ls
-python3 -i test.py
-popd
+python3 -i tests.py

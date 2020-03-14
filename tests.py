@@ -95,18 +95,22 @@ def t9():
                "What happens to light in the presence of gravitational fields?")
 
 
-def t10():
+def t10a():
   pdf_chat_with('pdfs', 'textrank',
                 about='What are the applications of TextRank? \
       How sentence extraction works? What is the role of PageRank?')
+
+def t10():
+  d=txt_quest('examples', 'textrank', 'textrank_quest')
+  print('LOG',d)
 
 def t11():
   d=txt_quest('examples', 'texas', 'texas_quest')
   print('LOG',d)
 
 def t12():
-  pdf_chat_with('pdfs', 'heli',
-                about='What are preflight and postflight briefings in a training program?')
+  d=txt_quest('examples', 'heli', 'heli_quest')
+  print('LOG',d)
 
 def t13():
   d=txt_quest('examples', 'red', 'red_quest')
@@ -122,4 +126,5 @@ def qtests() :
   t13()
 
 if __name__=='__main__' :
-  qtests()
+  #qtests()
+  pass

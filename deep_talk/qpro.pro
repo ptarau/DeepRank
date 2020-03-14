@@ -1,6 +1,6 @@
 :- dynamic(old_answer/1).
 
-trace(0).
+trace(1).
 
 load_plugins:-  
   PF='plugins.pro',
@@ -179,10 +179,16 @@ fresh_answer(Id,Algo):-
 search_answer(Id,Algo):-
    personalize,
    !,
-   distinct(Id,search_answer0(Id,Algo)),
+   search_answer1(Id,Algo),
    query_pers_sents(Id,_).
 search_answer(SentId,Algo):-
-  distinct(SentId,search_answer0(SentId,Algo)).
+  search_answer1(SentId,Algo).
+
+
+search_answer1(Id,Algo):-distinct(Id,search_answer0(Id,Algo)),
+  sent(Id,Ws),
+  length(Ws,L),
+  L>3.
 
 search_answer0(SentId,ner):-distinct(match_ners(SentId)).
 search_answer0(SentId,relevant):-distinct(match_relevant(SentId)).

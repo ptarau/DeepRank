@@ -177,17 +177,24 @@ pers_rank(Id,R):-integer(Id),rank(Id,R).
 
 % builds a stream of answers using several search algorithms
 
+/*
 search_answer(Id,Algo):-
    personalize,
    !,
    search_answer1(Id,Algo),
    query_pers_sents(Id,_).
+*/
 search_answer(SentId,Algo):-
   search_answer1(SentId,Algo).
 
 apply_rank(K-Id,R-Id):-
   pers_rank(Id,R0),
-  R is R0*K.
+  sent(Id,Ws),
+  length(Ws,L0),
+  ((L0 < 3 ; L0>64)->L is 256
+  ; member('?',Ws)->L is 256
+  ; L is L0),
+  R is exp(R0*K)*log(1+1/L).
 
 search_answer1(Id,Rank):-
   findall(Id,search_answer0(Id,_),Ids),
@@ -195,12 +202,7 @@ search_answer1(Id,Rank):-
   maplist(apply_rank,KIds,ByAlgo),
   %ppp(ByAlgo),
   sort(1, @>, ByAlgo, Decreasing),
-  member(Rank-Id,Decreasing),
-  %ppp('!!!':Rank-Id),
-  sent(Id,Ws),
-  length(Ws,L),
-  L>3,
-  L<64.
+  member(Rank-Id,Decreasing).
 
 search_answer0(SentId,ner):-distinct(match_ners(SentId)).
 search_answer0(SentId,relevant):-distinct(match_relevant(SentId)).

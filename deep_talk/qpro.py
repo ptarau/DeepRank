@@ -132,7 +132,7 @@ def dialog_step(prolog,question,gm,qgm,fNameNoSuf,log,params=params) :
     else :
       for answer in answers :
         say(answer)
-    print('')
+        print('')
 
 
 def sink(generator) :

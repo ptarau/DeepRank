@@ -55,7 +55,6 @@ ask(FNameNoSuf,Answer):-
   query_param(max_answers,MaxAnswers),
   show_query,
   answer(MaxAnswers,Answer),
-  ppp('!!! answer':Answer),
   true.
 
 show_query:-
@@ -173,8 +172,10 @@ fresh_answer(Id,Algo):-
   ; assertz(old_answer(Id))
   ).
 
-% builds a stream of answers using several search algorithms
+pers_rank(Id,R):-integer(Id),personalize,query_pers_sents(Id,R0),!,R is 2*R0.
+pers_rank(Id,R):-integer(Id),rank(Id,R).
 
+% builds a stream of answers using several search algorithms
 
 search_answer(Id,Algo):-
    personalize,
@@ -184,11 +185,22 @@ search_answer(Id,Algo):-
 search_answer(SentId,Algo):-
   search_answer1(SentId,Algo).
 
+apply_rank(K-Id,R-Id):-
+  pers_rank(Id,R0),
+  R is R0*K.
 
-search_answer1(Id,Algo):-distinct(Id,search_answer0(Id,Algo)),
+search_answer1(Id,Rank):-
+  findall(Id,search_answer0(Id,_),Ids),
+  freqsort(Ids,KIds),
+  maplist(apply_rank,KIds,ByAlgo),
+  %ppp(ByAlgo),
+  sort(1, @>, ByAlgo, Decreasing),
+  member(Rank-Id,Decreasing),
+  %ppp('!!!':Rank-Id),
   sent(Id,Ws),
   length(Ws,L),
-  L>3.
+  L>3,
+  L<64.
 
 search_answer0(SentId,ner):-distinct(match_ners(SentId)).
 search_answer0(SentId,relevant):-distinct(match_relevant(SentId)).
@@ -239,7 +251,7 @@ build_answer(SentIds,Answer):-
    % fuse words associated to sentence ids into atomic answers
    member(N-Algo,SortedNs),
    nice_sent(N,Sent),
-   ppp(algorithm_for(N,Algo)),
+   ppp('\nranked_answer'(N,Algo)),
    Answer=Sent.
 
 nice_sent(N,Sent):-

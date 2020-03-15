@@ -177,23 +177,19 @@ pers_rank(Id,R):-integer(Id),rank(Id,R).
 
 % builds a stream of answers using several search algorithms
 
-/*
-search_answer(Id,Algo):-
-   personalize,
-   !,
-   search_answer1(Id,Algo),
-   query_pers_sents(Id,_).
-*/
 search_answer(SentId,Algo):-
   search_answer1(SentId,Algo).
 
 apply_rank(K-Id,R-Id):-
+  Bad is 1000,
   pers_rank(Id,R0),
   sent(Id,Ws),
   length(Ws,L0),
-  ((L0 < 3 ; L0>64)->L is 256
-  ; member('?',Ws)->L is 256
-  ; L is L0),
+  ( L0 < 4 -> L is Bad
+%  ; L0>64->L is L0*log(L0)
+  ; member('?',Ws)->L is Bad
+  ; L is L0
+  ),
   R is exp(R0*K)*log(1+1/L).
 
 search_answer1(Id,Rank):-
@@ -207,7 +203,7 @@ search_answer1(Id,Rank):-
 search_answer0(SentId,ner):-distinct(match_ners(SentId)).
 search_answer0(SentId,relevant):-distinct(match_relevant(SentId)).
 search_answer0(SentId,edges):-distinct(match_edges(SentId)).
-search_answer0(SentId,svo):-distinct(match_svo(SentId)).
+search_answer0(SentId,svo):-distinct(match_svo_graph(2,SentId)).
 
 % matches using ranks in both query and matching data
 match_relevant(SentId):-
@@ -420,10 +416,27 @@ shares_kwords(K,Us,Vs,Is):-
   length(Is,L),L>=K.
 
 
+
+match_svo_graph(K,Id):-
+  is_defined(svo/4),
+  findall(W,(
+      in_focus(W,WT),
+      good_tag(WT),
+      WT\=='VB'
+    ),
+    Keys),
+  tc_match(K,Keys,Id).
+
 % transitive closure for relational reasoning
 
 
 call_svo(A,Rel,B,Id):-svo(A,Rel,B,Id);svo(B,Rel,A,Id).
+
+tc_match(K,Keys,Id):-
+  member(Word,Keys),
+  tc_search(K,Word,Id),
+  sent(Id,Ws),
+  intersection(Ws,Keys,[_|_]).
 
 tc_search(K,Word,Id):-
   length(Rels,K),

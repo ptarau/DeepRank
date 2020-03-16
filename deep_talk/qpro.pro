@@ -348,15 +348,20 @@ add_mark(M,M-1).
 count_marks(M-Xs,K-M):-sum_list(Xs,K).
 
 freqsort(MultiSet,Set):-
-  findall(M-1,member(M,MultiSet),MUs),keysort(MUs,MVs),
+  maplist(count_one,MultiSet,MUs),
+  keysort(MUs,MVs),
   group_pairs_by_key(MVs,Grouped),
   maplist(by_len,Grouped,LXs),
   keysort(LXs,RSet),
   reverse(RSet,Set).
 
-most_freq_of(MultiSet,Elem):-freqsort(MultiSet,[_-Elem|_]).
+count_one(M,M-1).
 
 by_len(K-Us,L-K):-length(Us,L).
+
+
+most_freq_of(MultiSet,Elem):-freqsort(MultiSet,[_-Elem|_]).
+
 
 
 % runs all goals in Gs, but just for their side effects

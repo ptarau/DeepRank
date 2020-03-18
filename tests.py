@@ -116,6 +116,11 @@ def t13():
   d=txt_quest('examples', 'red', 'red_quest')
   print('LOG',d)
 
+def t14():
+  d=txt_quest('examples', 'covid', 'covid_quest')
+  print('LOG',d)
+
+
 def all_ts():
   for i in range(0, 13):
     f = 't' + str(i)

@@ -1,0 +1,110 @@
+Background
+CDC is responding to an outbreak of respiratory disease caused by a novel (new) coronavirus that was first detected in China and which has now been detected in more than 100 locations internationally, including in the United States. The virus has been named “SARS-CoV-2” and the disease it causes has been named “coronavirus disease 2019” (abbreviated “COVID-19”).
+
+On January 30, 2020, the International Health Regulations Emergency Committee of the World Health Organization (WHO) declared the outbreak a “public health emergency of international concernexternal icon” (PHEIC). On January 31, Health and Human Services Secretary Alex M. Azar II declared a public health emergency (PHE) for the United States to aid the nation’s healthcare community in responding to COVID-19. On March 11, WHO publiclyexternal icon characterized COVID-19 as a pandemic. On March 13, the President of the United States declared the COVID-19 outbreak a national emergencyexternal icon.
+
+Source and Spread of the Virus
+Coronaviruses are a large family of viruses that are common in people and many different species of animals, including camels, cattle, cats, and bats. Rarely, animal coronaviruses can infect people and then spread between people such as with MERS-CoV, SARS-CoV, and now with this new virus (named SARS-CoV-2).
+
+The SARS-CoV-2 virus is a betacoronavirus, like MERS-CoV and SARS-CoV.  All three of these viruses have their origins in bats. The sequences from U.S. patients are similar to the one that China initially posted, suggesting a likely single, recent emergence of this virus from an animal reservoir.
+
+Early on, many of the patients at the epicenter of the outbreak in Wuhan, Hubei Province, China had some link to a large seafood and live animal market, suggesting animal-to-person spread. Later, a growing number of patients reportedly did not have exposure to animal markets, indicating person-to-person spread. Person-to-person spread was subsequently reported outside Hubei and in countries outside China, including in the United States. Some international destinations now have ongoing community spread with the virus that causes COVID-19, as do some parts of the United States. Community spread means some people have been infected and it is not known how or where they became exposed. Learn what is known about the spread of this newly emerged coronaviruses.
+
+The complete clinical picture with regard to COVID-19 is not fully known. Reported illnesses have ranged from very mild (including some with no reported symptoms) to severe, including illness resulting in death. While information so far suggests that most COVID-19 illness is mild, a reportexternal icon out of China suggests serious illness occurs in 16% of cases. Older people and people of all ages with severe chronic medical conditions — like heart disease, lung disease and diabetes, for example — seem to be at higher risk of developing serious COVID-19 illness.
+
+Learn more about the symptoms associated with COVID-19.
+
+COVID-19 Now a Pandemic
+A pandemic is a global outbreak of disease. Pandemics happen when a new virus emerges to infect people and can spread between people sustainably. Because there is little to no pre-existing immunity against the new virus, it spreads worldwide.
+
+The virus that causes COVID-19 is infecting people and spreading easily from person-to-person. Cases have been detected in most countries worldwide and community spread is being detected in a growing number of countries. On March 11, the COVID-19 outbreak was characterized as a pandemic by the WHOexternal icon.
+
+This is the first pandemic known to be caused by the emergence of a new coronavirus. In the past century, there have been four pandemics caused by the emergence of novel influenza viruses. As a result, most research and guidance around pandemics is specific to influenza, but the same premises can be applied to the current COVID-19 pandemic. Pandemics of respiratory disease follow a certain progression outlined in a “Pandemic Intervals Framework.” Pandemics begin with an investigation phase, followed by recognition, initiation, and acceleration phases. The peak of illnesses occurs at the end of the acceleration phase, which is followed by a deceleration phase, during which there is a decrease in illnesses. Different countries can be in different phases of the pandemic at any point in time and different parts of the same country can also be in different phases of a pandemic.
+
+There are ongoing investigations to learn more. This is a rapidly evolving situation and information will be updated as it becomes available.
+
+Situation in U.S.
+Different parts of the country are seeing different levels of COVID-19 activity. The United States nationally is currently in the initiation phases, but states where community spread is occurring are in the acceleration phase. The duration and severity of each phase can vary depending on the characteristics of the virus and the public health response.
+
+CDC and state and local public health laboratories are testing for the virus that causes COVID-19. View CDC’s Public Health Laboratory Testing map.
+More and more states are reporting cases of COVID-19 to CDC.
+U.S. COVID-19 cases include:
+Imported cases in travelers
+Cases among close contacts of a known case
+Community-acquired cases where the source of the infection is unknown.
+Three U.S. states are experiencing sustained community spread.
+View latest case counts, deaths, and a map of states with reported cases.
+Risk Assessment
+Risk depends on characteristics of the virus, including how well it spreads between people; the severity of resulting illness; and the medical or other measures available to control the impact of the virus (for example, vaccines or medications that can treat the illness) and the relative success of these. In the absence of vaccine or treatment medications, nonpharmaceutical interventions become the most important response strategy. These are community interventions that can reduce the impact of disease.
+
+The risk from COVID-19 to Americans can be broken down into risk of exposure versus risk of serious illness and death.
+
+Risk of exposure:
+
+The immediate risk of being exposed to this virus is still low for most Americans, but as the outbreak expands, that risk will increase. Cases of COVID-19 and instances of community spread are being reported in a growing number of states.
+People in places where ongoing community spread of the virus that causes COVID-19 has been reported are at elevated risk of exposure, with the level of risk dependent on the location.
+Healthcare workers caring for patients with COVID-19 are at elevated risk of exposure.
+Close contacts of persons with COVID-19 also are at elevated risk of exposure.
+Travelers returning from affected international locations where community spread is occurring also are at elevated risk of exposure, with level of risk dependent on where they traveled.
+Risk of Severe Illness:
+
+Early information out of China, where COVID-19 first started, shows that some people are at higher risk of getting very sick from this illness. This includes:
+
+Older adults, with risk increasing by age.
+People who have serious chronic medical conditions like:
+Heart disease
+Diabetes
+Lung disease
+CDC has developed guidance to help in the risk assessment and management of people with potential exposures to COVID-19.
+
+What May Happen
+More cases of COVID-19 are likely to be identified in the United States in the coming days, including more instances of community spread. CDC expects that widespread transmission of COVID-19 in the United States will occur. In the coming months, most of the U.S. population will be exposed to this virus.
+
+Widespread transmission of COVID-19 could translate into large numbers of people needing medical care at the same time. Schools, childcare centers, and workplaces, may experience more absenteeism. Mass gatherings may be sparsely attended or postponed. Public health and healthcare systems may become overloaded, with elevated rates of hospitalizations and deaths. Other critical infrastructure, such as law enforcement, emergency medical services, and sectors of the transportation industry may also be affected. Healthcare providers and hospitals may be overwhelmed. At this time, there is no vaccine to protect against COVID-19 and no medications approved to treat it. Nonpharmaceutical interventions will be the most important response strategy to try to delay the spread of the virus and reduce the impact of disease.
+
+CDC Response
+Global efforts at this time are focused concurrently on lessening the spread and impact of this virus. The federal government is working closely with state, local, tribal, and territorial partners, as well as public health partners, to respond to this public health threat.
+
+CDC is implementing its pandemic preparedness and response plans, working on multiple fronts, including providing specific guidance on measures to prepare communities to respond to local spread of the virus that causes COVID-19. There is an abundance of pandemic guidance developed in anticipation of an influenza pandemic that is being adapted for a potential COVID-19 pandemic.
+
+Highlights of CDC’s Response
+CDC established a COVID-19 Incident Management System on January 7, 2020. On January 21, CDC activated its Emergency Operations Center to better provide ongoing support to the COVID-19 response.
+The U.S. government has taken unprecedented steps with respect to travel in response to the growing public health threat posed by this new coronavirus:
+Foreign nationals who have been in China or Iran within the past 14 days cannot enter the United States.
+U.S. citizens, residents, and their immediate family members who have been in China or Iran within in the past 14 days can enter the United States, but they are subject to health monitoring and possible quarantine for up to 14 days.
+On March 11external icon, a similar policy was expanded to include 26 European countries for a period of 30 days.
+On March 14external icon, a similar policy was issued to include the United Kingdom and the Republic of Ireland.
+On March 8, CDC recommended that people at higher risk of serious COVID-19 illness avoid cruise travel and non-essential air travel.
+Additionally, CDC has issued the following additional specific travel guidance related to COVID-19.
+CDC has issued clinical guidance, including:
+On January 30, CDC published guidance for healthcare professionals on the clinical care of  COVID-19 patients.
+On February 3, CDC posted guidance for assessing the potential risk for various exposures to COVID-19 and managing those people appropriately.
+On February 27, CDC updated its criteria to guide evaluation of persons under investigation for COVID-19.
+On March 8, CDC issued a Health Alert Network (HAN).
+On March 10, CDC issued updated infection control guidance for healthcare settings, including guidance on the use of personal protective equipment (PPE) during a shortage.
+CDC has deployed multidisciplinary teams to support state health departments case identification, contact tracing, clinical management, and public communications.
+CDC has worked with federal partners to support the safe return of Americans overseas who have been affected by COVID-19.
+This is a picture of CDC’s laboratory test kit for severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). CDC tests are provided to U.S. state and local public health laboratories, Department of Defense (DOD) laboratories and select international laboratories. 
+This is a picture of CDC’s laboratory test kit for severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). CDC tests are provided to U.S. state and local public health laboratories, Department of Defense (DOD) laboratories and select international laboratories.
+
+An important part of CDC’s role during a public health emergency is to develop a test for the pathogen and equip state and local public health labs with testing capacity.
+CDC developed an rRT-PCR test to diagnose COVID-19.
+As of the evening of March 10, 79 state and local public health labs in 50 states and the District of Columbia have successfully verified and are currently using CDC COVID-19 diagnostic tests.
+Combined with other reagents that CDC has procured, there are enough testing kits to test more than 75,000 people.
+In addition, CDC has two laboratories conducting testing for the virus that causes COVID-19. CDC can test approximately 350 specimens per day.
+Commercial labs are working to develop their own tests that hopefully will be available soon. This will allow a greater number of tests to happen close to where potential cases are.
+CDC has grown the COVID-19 virus in cell culture, which is necessary for further studies, including for additional genetic characterization. The cell-grown virus was sent to NIH’s BEI Resources Repositoryexternal icon for use by the broad scientific community.
+CDC also is developing a serology test for COVID-19.
+CDC Recommends
+Everyone can do their part to help us respond to this emerging public health threat:
+Individuals and communities should familiarize themselves with recommendations to protect themselves and their communities from getting and spreading respiratory illnesses like COVID-19.
+Older people and people with severe chronic conditions should take special precautions because they are at higher risk of developing serious COVID-19 illness.
+If you are a healthcare provider, use your judgment to determine if a patient has signs and symptoms compatible with COVID-19 and whether the patient should be tested. Factors to consider in addition to clinical symptoms may include:
+Does the patient have recent travel from an affected area?
+Has the patient been in close contact with someone with COVID-19 or with patients with pneumonia of unknown cause?
+Does the patient reside in an area where there has been community spread of COVID-19?
+If you are a healthcare provider or a public health responder caring for a COVID-19 patient, please take care of yourself and follow recommended infection control procedures.
+If you are a close contact of someone with COVID-19 and develop symptoms of COVID-19, call your healthcare provider and tell them about your symptoms and your exposure. They will decide whether you need to be tested, but keep in mind that there is no treatment for COVID-19 and people who are mildly ill are able to isolate at home.
+If you are a resident in a community where there is ongoing spread of COVID-19 and you develop COVID-19 symptoms, call your healthcare provider and tell them about your symptoms. They will decide whether you need to be tested, but keep in mind that there is no treatment for COVID-19 and people who are mildly ill are able to isolate at home.
+For people who are ill with COVID-19, but are not sick enough to be hospitalized, please follow CDC guidance on how to reduce the risk of spreading your illness to others. People who are mildly ill with COVID-19 are able to isolate at home during their illness.
+If you have been in China or another affected area or have been exposed to someone sick with COVID-19 in the last 14 days, you will face some limitations on your movement and activity. Please follow instructions during this time. Your cooperation is integral to the ongoing public health response to try to slow spread of this virus.

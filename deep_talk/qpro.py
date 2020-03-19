@@ -13,7 +13,7 @@ from textcrafts.parser_api import *
 class talk_params(dr.craft_params):
   def __init__(self):
     super().__init__()
-    self.corenlp = False
+    self.corenlp = True
     self.quiet = True
     self.summarize = True
     self.quest_memory = 1
@@ -21,7 +21,7 @@ class talk_params(dr.craft_params):
     self.repeat_answers = 'yes'
     self.by_rank = 'no'
     self.personalize = 30
-    self.show=True
+    self.show=2
     self.cloud=36
 
 params=talk_params()

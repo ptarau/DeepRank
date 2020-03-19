@@ -386,6 +386,7 @@ class GraphMaker:
         if self.ranked:
             return self.ranked
         g = self.graph()
+
         pr = self.runPagerank(g, pers)
         self.ranked = pr
         if not self.params.giant_comp:

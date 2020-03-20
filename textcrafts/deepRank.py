@@ -16,7 +16,7 @@ class craft_params:
     self.corenlp=True
 
     self.abstractive='no'
-    self.show=False # graph pics?
+    self.show=True # graph pics?
 
     # for LINKS, RANKING, SUMMARIES AND KEYPHRASES
     self.all_recs  = True  # sentence recommendatations
@@ -475,9 +475,9 @@ class GraphMaker:
                 fs.add(f)
                 ts.add(t)
 
-                word_graph(wg, pr, s_ws)
+                #word_graph(wg, pr, s_ws)
                 # print('LLLL',wg.number_of_edges())
-            gshow(wg)
+            #gshow1(wg)
             for f in fs:
                 if f not in wg.nodes():
                     continue
@@ -830,7 +830,7 @@ def query_edges_to_dot(qgm):
 def showGraph(dot, show=False, file_name='textgraph.gv'):
     dot.render(file_name, view=show)
 
-def gshow(g, **kwargs):
+def gshow1(g, **kwargs):
     dot = Digraph()
     for e in g.edges():
         # print('EEEE',e)

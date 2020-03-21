@@ -792,6 +792,27 @@ def word_graph(g, pr, s_ws):
         g.add_edge(f, t, weight=r)
         # print("EDGE",(f,t,r))
 
+def best_edges(k,g) :
+  G=g.graph()
+  pr = nx.pagerank(G)
+  lg=nx.line_graph(G)
+  #pr=nx.pagerank(G)
+  prl=list(nx.pagerank(lg,personalization=None).items())
+  #for p in prl : print(p)
+  wes=[(e,r) for  (e,r) in prl if isinstance(e[0],str) and isinstance(e[1],str)]
+  wes.sort(key=lambda x : x[1], reverse=True)
+  xs=map(lambda x : x[0],wes)
+  yield from take(k,xs)
+
+def best_line_graph(k,g) :
+  B=nx.DiGraph()
+  for x,y in best_edges(k,g) :
+    r=g.graph()[x][y]["rel"]
+    #print('REL',x,y,r)
+    B.add_edge(x,y)
+    if r: B[x][y]["rel"]=r
+  return B
+
 # shows summaries and keywords from file
 # extracts highest ranked svo relations  and visualizes
 # highest ranked filtered word to word edges as dot graph

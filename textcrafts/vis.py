@@ -29,8 +29,6 @@ def gskim(g,attr=None,roots=None,filter=lambda x : isinstance(x,str)) :
       else :
         newg.add_edge(x, y)
 
-
-
 def gshow(g, attr=None, file_name='temp.gv', show=1):
 
   size=g.number_of_edges()

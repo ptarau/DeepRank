@@ -5,6 +5,7 @@ import subprocess
 
 from textcrafts import deepRank as dr
 from textcrafts.sim import *
+from textcrafts.vis import *
 from textcrafts.parser_api import *
 
 
@@ -76,6 +77,9 @@ def dialog_about(fNameNoSuf,question,params=params) :
 
   if params.summarize :
     print(gm)
+  #for x in dr.best_edges(100,gm) : print('BEST EDGE',x)
+  B=dr.best_line_graph(32,gm)
+  gshow(B,attr="rel")
   prolog = Prolog()
   sink(prolog.query("consult('" + pro() + "')"))
   sink(prolog.query("load('"+fNameNoSuf+"')"))

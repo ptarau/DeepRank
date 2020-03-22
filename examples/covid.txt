@@ -1,7 +1,7 @@
 Background
-CDC is responding to an outbreak of respiratory disease caused by a novel (new) coronavirus that was first detected in China and which has now been detected in more than 100 locations internationally, including in the United States. The virus has been named “SARS-CoV-2” and the disease it causes has been named “coronavirus disease 2019” (abbreviated “COVID-19”).
+CDC is responding to an outbreak of respiratory disease caused by a novel (new) coronavirus that was first detected in China and which has now been detected in more than 100 locations internationally, including in the United States. The virus has been named "SARS-CoV-2" and the disease it causes has been named "coronavirus disease 2019" (abbreviated "COVID-19").
 
-On January 30, 2020, the International Health Regulations Emergency Committee of the World Health Organization (WHO) declared the outbreak a “public health emergency of international concernexternal icon” (PHEIC). On January 31, Health and Human Services Secretary Alex M. Azar II declared a public health emergency (PHE) for the United States to aid the nation’s healthcare community in responding to COVID-19. On March 11, WHO publiclyexternal icon characterized COVID-19 as a pandemic. On March 13, the President of the United States declared the COVID-19 outbreak a national emergencyexternal icon.
+On January 30, 2020, the International Health Regulations Emergency Committee of the World Health Organization (WHO) declared the outbreak a "public health emergency of international concern " (PHEIC). On January 31, Health and Human Services Secretary Alex M. Azar II declared a public health emergency (PHE) for the United States to aid the nation’s healthcare community in responding to COVID-19. On March 11, WHO publicly  characterized COVID-19 as a pandemic. On March 13, the President of the United States declared the COVID-19 outbreak a national emergency .
 
 Source and Spread of the Virus
 Coronaviruses are a large family of viruses that are common in people and many different species of animals, including camels, cattle, cats, and bats. Rarely, animal coronaviruses can infect people and then spread between people such as with MERS-CoV, SARS-CoV, and now with this new virus (named SARS-CoV-2).
@@ -10,16 +10,16 @@ The SARS-CoV-2 virus is a betacoronavirus, like MERS-CoV and SARS-CoV.  All thre
 
 Early on, many of the patients at the epicenter of the outbreak in Wuhan, Hubei Province, China had some link to a large seafood and live animal market, suggesting animal-to-person spread. Later, a growing number of patients reportedly did not have exposure to animal markets, indicating person-to-person spread. Person-to-person spread was subsequently reported outside Hubei and in countries outside China, including in the United States. Some international destinations now have ongoing community spread with the virus that causes COVID-19, as do some parts of the United States. Community spread means some people have been infected and it is not known how or where they became exposed. Learn what is known about the spread of this newly emerged coronaviruses.
 
-The complete clinical picture with regard to COVID-19 is not fully known. Reported illnesses have ranged from very mild (including some with no reported symptoms) to severe, including illness resulting in death. While information so far suggests that most COVID-19 illness is mild, a reportexternal icon out of China suggests serious illness occurs in 16% of cases. Older people and people of all ages with severe chronic medical conditions — like heart disease, lung disease and diabetes, for example — seem to be at higher risk of developing serious COVID-19 illness.
+The complete clinical picture with regard to COVID-19 is not fully known. Reported illnesses have ranged from very mild (including some with no reported symptoms) to severe, including illness resulting in death. While information so far suggests that most COVID-19 illness is mild, a report out of China suggests serious illness occurs in 16% of cases. Older people and people of all ages with severe chronic medical conditions — like heart disease, lung disease and diabetes, for example — seem to be at higher risk of developing serious COVID-19 illness.
 
 Learn more about the symptoms associated with COVID-19.
 
 COVID-19 Now a Pandemic
 A pandemic is a global outbreak of disease. Pandemics happen when a new virus emerges to infect people and can spread between people sustainably. Because there is little to no pre-existing immunity against the new virus, it spreads worldwide.
 
-The virus that causes COVID-19 is infecting people and spreading easily from person-to-person. Cases have been detected in most countries worldwide and community spread is being detected in a growing number of countries. On March 11, the COVID-19 outbreak was characterized as a pandemic by the WHOexternal icon.
+The virus that causes COVID-19 is infecting people and spreading easily from person-to-person. Cases have been detected in most countries worldwide and community spread is being detected in a growing number of countries. On March 11, the COVID-19 outbreak was characterized as a pandemic by the WHO .
 
-This is the first pandemic known to be caused by the emergence of a new coronavirus. In the past century, there have been four pandemics caused by the emergence of novel influenza viruses. As a result, most research and guidance around pandemics is specific to influenza, but the same premises can be applied to the current COVID-19 pandemic. Pandemics of respiratory disease follow a certain progression outlined in a “Pandemic Intervals Framework.” Pandemics begin with an investigation phase, followed by recognition, initiation, and acceleration phases. The peak of illnesses occurs at the end of the acceleration phase, which is followed by a deceleration phase, during which there is a decrease in illnesses. Different countries can be in different phases of the pandemic at any point in time and different parts of the same country can also be in different phases of a pandemic.
+This is the first pandemic known to be caused by the emergence of a new coronavirus. In the past century, there have been four pandemics caused by the emergence of novel influenza viruses. As a result, most research and guidance around pandemics is specific to influenza, but the same premises can be applied to the current COVID-19 pandemic. Pandemics of respiratory disease follow a certain progression outlined in a "Pandemic Intervals Framework. " Pandemics begin with an investigation phase, followed by recognition, initiation, and acceleration phases. The peak of illnesses occurs at the end of the acceleration phase, which is followed by a deceleration phase, during which there is a decrease in illnesses. Different countries can be in different phases of the pandemic at any point in time and different parts of the same country can also be in different phases of a pandemic.
 
 There are ongoing investigations to learn more. This is a rapidly evolving situation and information will be updated as it becomes available.
 
@@ -72,8 +72,8 @@ CDC established a COVID-19 Incident Management System on January 7, 2020. On Jan
 The U.S. government has taken unprecedented steps with respect to travel in response to the growing public health threat posed by this new coronavirus:
 Foreign nationals who have been in China or Iran within the past 14 days cannot enter the United States.
 U.S. citizens, residents, and their immediate family members who have been in China or Iran within in the past 14 days can enter the United States, but they are subject to health monitoring and possible quarantine for up to 14 days.
-On March 11external icon, a similar policy was expanded to include 26 European countries for a period of 30 days.
-On March 14external icon, a similar policy was issued to include the United Kingdom and the Republic of Ireland.
+On March 11 , a similar policy was expanded to include 26 European countries for a period of 30 days.
+On March 14 , a similar policy was issued to include the United Kingdom and the Republic of Ireland.
 On March 8, CDC recommended that people at higher risk of serious COVID-19 illness avoid cruise travel and non-essential air travel.
 Additionally, CDC has issued the following additional specific travel guidance related to COVID-19.
 CDC has issued clinical guidance, including:
@@ -93,7 +93,7 @@ As of the evening of March 10, 79 state and local public health labs in 50 state
 Combined with other reagents that CDC has procured, there are enough testing kits to test more than 75,000 people.
 In addition, CDC has two laboratories conducting testing for the virus that causes COVID-19. CDC can test approximately 350 specimens per day.
 Commercial labs are working to develop their own tests that hopefully will be available soon. This will allow a greater number of tests to happen close to where potential cases are.
-CDC has grown the COVID-19 virus in cell culture, which is necessary for further studies, including for additional genetic characterization. The cell-grown virus was sent to NIH’s BEI Resources Repositoryexternal icon for use by the broad scientific community.
+CDC has grown the COVID-19 virus in cell culture, which is necessary for further studies, including for additional genetic characterization. The cell-grown virus was sent to NIH’s BEI Resources Repository  for use by the broad scientific community.
 CDC also is developing a serology test for COVID-19.
 CDC Recommends
 Everyone can do their part to help us respond to this emerging public health threat:

@@ -22,7 +22,7 @@ class talk_params(dr.craft_params):
     self.repeat_answers = 'yes'
     self.by_rank = 'no'
     self.personalize = 30
-    self.show=2
+    self.show=True
     self.cloud=36
 
 params=talk_params()

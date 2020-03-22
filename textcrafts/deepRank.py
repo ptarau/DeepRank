@@ -2,6 +2,7 @@ import networkx as nx
 import math
 from collections import defaultdict
 import subprocess
+from inspect import getframeinfo, stack
 from .down import ensure_nlk_downloads
 from nltk.corpus import words
 from nltk.corpus import stopwords
@@ -27,7 +28,7 @@ class craft_params:
     self.sent_count=5
     self.word_count=6
     self.rel_count=10
-    self.dot_count=20
+    self.dot_count=16
 
    # formula for adjusting rank of long or short sentences
   def adjust_rank(self,rank,length,avg) :
@@ -51,9 +52,15 @@ params=craft_params()
 
 print('RUNNING textcrafts',__file__)
 
-def ppp(*args): print(args)
+def ppp(*args) :
+  caller = getframeinfo(stack()[1][0])
 
-#ppp("TOOLKIT",toolkit)
+  print('DEBUG:',
+        caller.filename.split('/')[-1],
+        '->',caller.lineno,end=': ')
+  print(*args)
+
+print("TOOLKIT iS corenlp: ",params.corenlp)
 
 def make_word_dict(fname):
     wd = set(words.words())
@@ -228,7 +235,7 @@ def isAny(x):
 
 class GraphMaker:
     def __init__(self,params=params,file_name=None,text=None,corenlp=False):
-        print("PARAMETER CLASS:",type(params).__name__)
+        print("PARAMETER CLASS:",type(params).__name__,'\n')
         self.params=params
         self.api_classname = params.get_toolkit()
         #self.api_classname = api_classname
@@ -764,6 +771,7 @@ def to_svo(k, rs):
     #for x in svo : ppp(k,'GOT SVO',x)
     return svo
 
+# the walk should go along dependency edges !!!
 def word_graph(g, pr, s_ws):
       pr = dict(pr)
       s, ws0 = s_ws

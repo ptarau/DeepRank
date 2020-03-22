@@ -249,7 +249,7 @@ build_answer(SentIds,Answer):-
    % fuse words associated to sentence ids into atomic answers
    member(N-Algo,SortedNs),
    nice_sent(N,Sent),
-   ppp('\nranked_answer'(N,Algo)),
+   ppp('ranked_answer'(N,Algo)),ppp(''),
    Answer=Sent.
 
 nice_sent(N,Sent):-
@@ -392,7 +392,7 @@ wh_word(when).
 wh_word(who).
 wh_word(many).
 
-
+shared_ner_words(1).
 
 who(S):-who([_],S).
 who(KWs,S):-wh(['PERSON','ORGANIZATION','TITLE'],KWs,S).
@@ -414,9 +414,10 @@ wh0(Tags,KWs,S):-
   member(Tag,Tags),
   member((_Pos,_LW,Tag),Ps),
   sent(S,Ws),
-  shares_kwords(1,KWs,Ws,_).
+  shared_ner_words(K),
+  shares_ner_words(K,KWs,Ws,_).
 
-shares_kwords(K,Us,Vs,Is):-
+shares_ner_words(K,Us,Vs,Is):-
   intersection(Us,Vs,Is),
   length(Is,L),L>=K.
 
@@ -501,7 +502,7 @@ t10:-test('examples/textrank').
 t11:-test('examples/texas').
 t12:-test('examples/heli').
 t13:-test('examples/red').
-
+t14:-test('examples/covid').
 
 all_ts:- do((
   between(0,13,I),

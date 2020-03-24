@@ -40,7 +40,6 @@ nltk.download('stopwords')
 - or, if that fails on a Mac, use run``` python3 down.py``` 
 to collect the desired nltk resource files.
 
-Tested with the above on a Mac, with macOS Mojave and Catalina and on Ubuntu Linux 18.x.
 
 - Make sure that the default version of java on your machine is java 9, otherwise the *start_server.sh* won't work
     - '''java --version''' returns a JRE >= 9.0.0
@@ -50,6 +49,8 @@ You can activate the alternative Stanford CoreNLP toolkit as follows:
 - install [Stanford CoreNLP](https://stanfordnlp.github.io/CoreNLP/) and unzip in a directory of your choice (ag., the local directory)
 - edit if needed ```start_server.sh``` with the location of the parser directory
     - No edit need be make if the directory is unzip in the same directory as '''start_server.sh'''
+
+Tested above on a Mac, with macOS Mojave and Catalina and on Ubuntu Linux 18.x.
 
 *Note however that the Stanford CoreNLP is GPL-licensed, which can place restrictions on proprietary software activating this option.*
 

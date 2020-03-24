@@ -18,9 +18,17 @@ HOME: https://github.com/ptarau/TextGraphCrafts
 ## Dependencies:
 
 - python 3.7 or newer, pip3, java 9.x or newer. Also, having git installed is recommended for easy updates
-- ```pip3 install nltk```
--  also, run in python3 something like 
+- Use '''pip3''' to install the following dependencies
+    - nltk (>=3.4.5)
+    - networkx (>=2.3)
+    - requests (>=2.23.0)
+    - graphviz (>=0.13), also ensure .gv files can be viewed. This can be done by installing graphviz on the system rather than just the python library
+    - stanfordnlp (>=0.2.0), parser
+        - Note that ```stanfordnlp ``` requires torch binaries which are easier to instal with ````anaconda```. 
 
+- Example: ```pip3 install nltk```
+
+-  In python3 run something like 
 
 ```
 import nltk
@@ -31,20 +39,26 @@ nltk.download('stopwords')
 
 - or, if that fails on a Mac, use run``` python3 down.py``` 
 to collect the desired nltk resource files.
-- ```pip3 install networkx```
-- ```pip3 install requests```
-- ```pip3 install graphviz```, also ensure .gv files can be viewed
-- ```pip3 install stanfordnlp``` parser
-- Note that ```stanfordnlp ``` requires torch binaries which are easier to instal with ````anaconda```.
 
 Tested with the above on a Mac, with macOS Mojave and Catalina and on Ubuntu Linux 18.x.
+
+- Make sure that the default version of java on your machine is java 9, otherwise the *start_server.sh* won't work
+    - '''java --version''' returns a JRE >= 9.0.0
+
+You can activate the alternative Stanford CoreNLP toolkit as follows:
+
+- install [Stanford CoreNLP](https://stanfordnlp.github.io/CoreNLP/) and unzip in a directory of your choice (ag., the local directory)
+- edit if needed ```start_server.sh``` with the location of the parser directory
+    - No edit need be make if the directory is unzip in the same directory as '''start_server.sh'''
+
+*Note however that the Stanford CoreNLP is GPL-licensed, which can place restrictions on proprietary software activating this option.*
 
 ## Running it:
 #### in a shell window, run
  *start_server.sh*
 #### in another shell window, start with
 
-```python3 -i tests.py```
+```python3 -i test.py```
 
 and then interactively, at the ">>>" prompt, try
 
@@ -66,27 +80,6 @@ and then interactively, at the ">>>" prompt, try
 ```examples/```
 
  
-### Handling PDF documents
-
-The easiest way to do this is to install *pdftotext*, which is part of [Poppler tools](https://poppler.freedesktop.org/).
-
-If pdftotext is installed, you can place a file like *textrank.pdf*
-already in subdirectory pdfs/ and try something similar to:
-
-Change setting in file params.py to use the system with
-other global parameter settings.
-
-### Alternative NLP toolkit
-
-*Optionally*, you can activate the alternative Stanford CoreNLP toolkit as follows:
-
-- install [Stanford CoreNLP](https://stanfordnlp.github.io/CoreNLP/) and unzip in a derictory of your choice (ag., the local directory)
-- edit if needed ```start_parser.sh``` with the location of the parser directory
-- override the ```params``` class and set ```corenlp=True```
-
-*Note however that the Stanford CoreNLP is GPL-licensed, which can place restrictions on proprietary software activating this option.*
-
-
 ## Project Description
 
 ** The system uses package ```text_graph_crafts``` based on dependency links for building Text Graphs, that with help of a centrality algorithm like *PageRank*, extract relevant keyphrases, summaries and relations from text documents. 
@@ -98,18 +91,7 @@ A *SWI-Prolog* based module adds an interactive shell for talking about the docu
 
 - python 3.7 or newer, pip3, java 9.x or newer, SWI-Prolog 8.x or newer, graphviz
 - also, having git installed is recommended for easy updates
-- ```pip3 install text_graph_crafts```
 
-#### see how to activate other outputs in file 
-
-```https://github.com/ptarau/TextGraphCrafts/blob/master/text_graph_crafts/deepRank.py```
-
-The second is activated with
- 
- ```python3 -i qpro.py```
- 
-or the shorthand script ```qgo```.
- 
 It requires SWI-Prolog to be installed and available in the path as the executable ```swipl``` and the Python to Prolog interface ```pyswip```, to be installed with
 
 ```pip3 install pyswip```
@@ -117,6 +99,11 @@ It requires SWI-Prolog to be installed and available in the path as the executab
 It activates a Prolog process to which Python sends interactively queries about a selected document. Answers are computed by Prolog and then, if the parameter ```quiet``` is off, spoken using the ```say``` OS-level facility (available on OS X and Linux machines.
 
 Prolog relation files, generated on the Python side are associated to each document as well as the queries about it. They are stored in the same directory as the document.
+
+ ```python3 -i tests.py```
+ 
+or the shorthand script ```qgo```.
+ 
 
 Try
 ```

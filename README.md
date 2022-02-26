@@ -49,12 +49,12 @@ Tested with the above on a Mac, with macOS Mojave and Catalina and on Ubuntu Lin
 and then interactively, at the ">>>" prompt, try
 
 ```
->>> test1()
->>> test2()
+>>> t1()
+>>> t2()
 >>> ...
->>> test9()
->>> test12()
->>> test0()
+>>> t9()
+>>> t2()
+>>> t0()
 ```
 
 #### see how to activate other outputs in file 
@@ -114,6 +114,12 @@ It requires SWI-Prolog to be installed and available in the path as the executab
 
 ```pip3 install pyswip```
  
+Note that on MacOS you will need to do something like:
+
+export DYLD_FALLBACK_LIBRARY_PATH=/Applications/SWI-Prolog.app/Contents/Frameworks/
+
+to help pyswip find your SWI-Prolog library.
+
 It activates a Prolog process to which Python sends interactively queries about a selected document. Answers are computed by Prolog and then, if the parameter ```quiet``` is off, spoken using the ```say``` OS-level facility (available on OS X and Linux machines.
 
 Prolog relation files, generated on the Python side are associated to each document as well as the queries about it. They are stored in the same directory as the document.

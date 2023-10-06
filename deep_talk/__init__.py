@@ -1,3 +1,3 @@
-__all__ = ('dialog_about','txt_quest','pdf_quest', 'pro')
+#__all__ = ('dialog_about','txt_quest','pdf_quest', 'pro')
 
-from .qpro import *
+#from .qpro import *

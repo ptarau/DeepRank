@@ -1,22 +1,12 @@
 import os
-from deep_talk.qpro import *
+from deep_talk.qpro_minimal import *
 from deep_talk.query import qgo
 
 def ptest():
   f = 'examples/bfr'
   qf = f + '_query.pro'
   gm = export_to_prolog(f)
-  prolog = Prolog()
-  prolog.consult(f + '.pro')
-  q = prolog.query('listing(dep)')
-  next(q)
-  q.close()
-  qgm = GraphMaker(params=params)
-  query_to_prolog('What is the BFR?', gm, qgm, f)
-  prolog.consult(qf)
-  q = prolog.query('listing(query_sent)')
-  next(q)
-  q.close()
+
 
 
 def q0():
@@ -131,6 +121,7 @@ def qtests() :
   t13()
 
 if __name__=='__main__' :
-  q1()
+  #t1()
+  all_ts()
   pass
 

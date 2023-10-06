@@ -76,20 +76,19 @@ already in subdirectory pdfs/ and try something similar to:
 Change setting in file params.py to use the system with
 other global parameter settings.
 
-### Alternative NLP toolkit
+### NLP toolkit
 
-*Optionally*, you can activate the alternative Stanford CoreNLP toolkit as follows:
+You can activate the  Stanford CoreNLP toolkit as follows:
 
 - install [Stanford CoreNLP](https://stanfordnlp.github.io/CoreNLP/) and unzip in a derictory of your choice (ag., the local directory)
 - edit if needed ```start_parser.sh``` with the location of the parser directory
-- override the ```params``` class and set ```corenlp=True```
 
-*Note however that the Stanford CoreNLP is GPL-licensed, which can place restrictions on proprietary software activating this option.*
+*Note however that the Stanford CoreNLP is GPL-licensed, which can place restrictions on proprietary software.
 
 
 ## Project Description
 
-** The system uses package ```text_graph_crafts``` based on dependency links for building Text Graphs, that with help of a centrality algorithm like *PageRank*, extract relevant keyphrases, summaries and relations from text documents. 
+** The system uses package ```textcrafts``` based on dependency links for building Text Graphs, that with help of a centrality algorithm like *PageRank*, extract relevant keyphrases, summaries and relations from text documents. 
 
 A *SWI-Prolog* based module adds an interactive shell for talking about the document with a dialog agent that extracts for each query the most relevant sentences covering the document. Spoken dialog is also available if the OS supports it. Developed with *Python 3*, on OS X, but portable to Linux.**
 

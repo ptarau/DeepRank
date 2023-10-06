@@ -70,6 +70,6 @@ def bm():
         print(fname,tm(lambda: bm2(fname), number=1))
 
 if __name__ == '__main__':
-    # t1()
+    t1()
     t2()
-    # bm()
+    #bm()

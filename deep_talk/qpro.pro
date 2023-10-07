@@ -27,9 +27,9 @@ load(FNameNoSuf):-
   retractall(old_answer(_)),
   nb_setval(fname,FNameNoSuf).
 
-% test if a text file is loaded  
-is_loaded(FNameNoSuf):-catch(nb_getval(fname,FNameNoSuf),_,fail).  
-  
+% test if a text file is loaded
+is_loaded(FNameNoSuf):-catch(nb_getval(fname,FNameNoSuf),_,fail).
+
 % answers a call from Python - trying a moderately clever
 % search through the database, for the highest ranked sentences
 % that match the query
@@ -87,10 +87,10 @@ expanded_query_rank(W,WR):-
     ; is_defined(query_rel/4),
       query_rel(XL,_,W,_),
       rank(W,WR)
-    ; 
+    ;
       is_defined(query_sim/4),
       query_sim(XL,XT,W,WT),
-      good_tag(WT),    
+      good_tag(WT),
       rank(W,RR),WR is R*RR
     ).
 
@@ -115,7 +115,7 @@ in_focus_at(SentId,W,WT):-
   ; good_tag(TT),W=T,WT=TT
   ).
 
-% collects sentence id matches derived from SVO relations  
+% collects sentence id matches derived from SVO relations
 match_svo(K):-
   is_defined(svo/4),
   is_defined(query_svo/4),
@@ -134,7 +134,7 @@ match_svo(I):-
   ( W=S,svo(S,_,_,I)
   ; W=O,svo(_,_,O,I)
   ).
-  
+
 % collects sentence id by matching agains edges
 match_edges(K):-
   is_defined(query_edge/6),
@@ -210,23 +210,23 @@ match_relevant(SentId):-
    % best by rank in query
    findnsols(60,R-X,(
        distinct(expanded_query_rank(X,QR)), % lemma
-       R=QR    
+       R=QR
      ),
      RankedXs
-   ),!, 
+   ),!,
    % best by weights coming from joint ranks
    revsort(RankedXs,RXs),
- 
+
    % drop ranks,
    maplist(arg(2),RXs,Xs), % highest ranked matching words
-   % find matching sentence ids and their ranks  
+   % find matching sentence ids and their ranks
    findall(R-N,
      ( sent(N,Ws),
        maplist(to_lemma,Ws,Ls),
        append(Ws,Ls,WLs0),sort(WLs0,WLs),
        intersection(Xs,WLs,Is),
        length(Is,L),L>=2,
-       findall(R,(member(I,Is),member(R-I,RXs)),Rs),    
+       findall(R,(member(I,Is),member(R-I,RXs)),Rs),
        sumlist(Rs,R0),R is L*R0
      ),
      RNs
@@ -234,11 +234,11 @@ match_relevant(SentId):-
    % sort by decreasing ranks
    revsort(RNs,Ranked),
    member(_-SentId,Ranked).
-   
+
    % pick the best MaxAns sentence ids
    %findnsols(MaxAns,N,member(_-N,Ranked),Ids),
    %!.
-   
+
 
 
 build_answer(SentIds,Answer):-

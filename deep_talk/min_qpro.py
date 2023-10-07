@@ -43,6 +43,7 @@ def go():
     print('dialog_about', fNameNoSuf)
     dialog_about(fNameNoSuf, None)
 
+
 # interactive dialog
 def talk_about(fNameNoSuf, params=params):
     return dialog_about(fNameNoSuf, None, params=params)
@@ -319,6 +320,7 @@ def personalized_to_prolog(pref, gm, qgm, personalize, f):
     facts_to_prolog(pref, 'pers_sents', sents, f)
     facts_to_prolog(pref, 'pers_words', words, f)
 
+
 def ensure_path(fname):
     """
     makes sure path to directory and directory exist
@@ -327,14 +329,42 @@ def ensure_path(fname):
     os.makedirs(d, exist_ok=True)
 
 
+dyn_preds = """
+:-dynamic(old_answer/1).
+:-dynamic(sim/4).
+:-dynamic(sent/2).
+:-dynamic(ner/2).
+:-dynamic(dep/6).
+:-dynamic(edge/6).
+:-dynamic(rank/2).
+:-dynamic(w2l/3).
+:-dynamic(svo/4).
+:-dynamic(summary/2).
+:-dynamic(keyword/1).
+:-dynamic(rel/4).
+:-dynamic(param/2).
+:-dynamic(pers_sents/2).
+:-dynamic(pers_words/2).
+:-dynamic(sim/4).
+"""
+
+
+def dyns(pref):
+    d = dyn_preds
+    if pref:
+        d = d.replace('dynamic(','dynamic('+pref)
+    return d
+
+
 # sends several fact predicates to Prolog
 # small files are used that the pyswip activated Prolog will answer
 # the pref='query_' marks file names with query_, while
 # the empty prefix pref='' marks realtions describing a document
 def to_prolog(pref, gm, qgm, fNameNoSuf, params=params):
-    fname='out/'+fNameNoSuf + '.pro'
+    fname = 'out/' + fNameNoSuf + '.pro'
     ensure_path(fname)
     with open(fname, 'w') as f:
+        print(dyns(pref), file=f),
         triples_to_prolog(pref, qgm, f)
         # print(' ',file=f)
         edges_to_prolog(pref, qgm, f)
@@ -350,7 +380,7 @@ def to_prolog(pref, gm, qgm, fNameNoSuf, params=params):
         svo_to_prolog(pref, qgm, f)
         print(' ', file=f)
         if pref:  # query only
-            sims_to_prolog(pref,gm,qgm,f)
+            sims_to_prolog(pref, gm, qgm, f)
             rels_to_prolog(pref, gm, qgm, f)  # should be after svo!
             if params.personalize > 0:
                 personalized_to_prolog(pref, gm, qgm, params.personalize, f)
@@ -439,6 +469,7 @@ def txt_quest(Folder, FNameNoSuf, QuestFileNoSuf, params=params):
 
 
 ppp = print
+
 
 def interleave_with(sep, end, xs):
     def gen():

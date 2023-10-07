@@ -1,4 +1,15 @@
-:- dynamic(old_answer/1).
+:-dynamic(old_answer/1).
+:-dynamic(sim/4).
+:-dynamic(sent/2).
+:-dynamic(ner/2).
+:-dynamic(dep/6).
+:-dynamic(edge/6).
+:-dynamic(rank/2).
+:-dynamic(w2l/3).
+:-dynamic(svo/4).
+:-dynamic(summary/2).
+:-dynamic(keyword/1).
+
 
 trace(1).
 
@@ -6,7 +17,7 @@ load_plugins:-
   PF='plugins.pro',
   (exists_file(PF)->consult(PF);nb_setval(plugins,false)).
  
-:-load_plugins.
+%:-load_plugins.
  
 has_plugins:-nb_getval(plugins,true).
 
@@ -16,8 +27,8 @@ has_plugins:-nb_getval(plugins,true).
 % load the Python-generated Prolog fact for a given text file
 load(FNameNoSuf):-is_loaded(FNameNoSuf),!.
 load(FNameNoSuf):-
-  atomic_list_concat([FNameNoSuf,'.pro'],F),
-  do((
+  atomic_list_concat_([FNameNoSuf,'.pro'],F),
+  run((
     member(FN,
      [sim/4,sent/2,ner/2,dep/6,edge/6,rank/2,w2l/3,svo/4,summary/2,keyword/1]
     ),
@@ -42,8 +53,8 @@ ask(Answer):-
 % main interface predicate, !!!!!!!!!!!!!!
 % Python/pyswip queries are of this form
 ask(FNameNoSuf,Answer):-
-  atomic_list_concat([FNameNoSuf,'_query.pro'],F),
-  do((
+  atomic_list_concat_([FNameNoSuf,'_query.pro'],F),
+  run((
     member(FN,
      [query_sim/4,query_sent/2,query_ner/2,query_dep/6,query_edge/6,query_rank/2,
       query_w2l/3,query_svo/4,query_rel/4,query_summary/2,query_keyword/1,
@@ -58,9 +69,9 @@ ask(FNameNoSuf,Answer):-
   true.
 
 show_query:-
-  listing(query_sent).
+  listing(query_sent/2).
   /*
-  do((
+  run((
     query_sent(N,_),
     N>0,
     nice_sent(N,Sent),
@@ -227,7 +238,7 @@ match_relevant(SentId):-
        intersection(Xs,WLs,Is),
        length(Is,L),L>=2,
        findall(R,(member(I,Is),member(R-I,RXs)),Rs),    
-       sumlist(Rs,R0),R is L*R0
+       sum_list(Rs,R0),R is L*R0
      ),
      RNs
    ),
@@ -259,7 +270,7 @@ nice_sent(N,Sent):-
    subst('-LRB-','(',Ws3,Ws4),
   subst('-RRB-',')',Ws4,Ws),
   intersperse([N,':'|Ws],' ',SWs),
-  atomic_list_concat(SWs,Sent).
+  atomic_list_concat_(SWs,Sent).
 
 good_tag(WT):-good_tag(WT,_).
 
@@ -365,11 +376,10 @@ most_freq_of(MultiSet,Elem):-freqsort(MultiSet,[_-Elem|_]).
 
 
 % runs all goals in Gs, but just for their side effects
-do(Gs):-Gs,fail;true.
+run(Gs):-Gs,fail;true.
 
 is_defined(F/N):-
-  functor(T,F,N),
-  predicate_property(T,defined),
+  current_predicate(F/N),
   !.
 
 % counts number of clauses of given predicate F/N
@@ -400,8 +410,8 @@ who(KWs,S):-wh(['PERSON','ORGANIZATION','TITLE'],KWs,S).
 many(S):-many([_],S).
 many(KWs,S):-wh(['NUMBER', 'ORDINAL', 'MONEY'],KWs,S).
 
-when(S):-when([_],S).
-when(KWs,S):-wh(['DATE','TIME','DURATION'],KWs,S).
+when_(S):-when_([_],S).
+when_(KWs,S):-wh(['DATE','TIME','DURATION'],KWs,S).
 
 where(S):-where([_],S).
 where(KWs,S):-wh(['LOCATION','CITY','COUNTRY','STATE_OR_PROVINCE'],KWs,S).
@@ -479,7 +489,7 @@ tc2res(K,A,Rels,B,res(Steps,Id,Path)):-
 
 test(FNameNoSuf):-
   load(FNameNoSuf),
-  do((
+  run((
     ask(FNameNoSuf,A),
     writeln(A)
   )).
@@ -490,24 +500,98 @@ ppp(X):-trace(T),T>0->writeln(X);true.
 
 t0:-test('../out/examples/tesla').
 t1:-test('../out/examples/bfr').
-t2:-test('../out/examples/hindenburg').
+t2. %:-test('../out/examples/hindenburg').
 t3:-test('../out/examples/const').
 t4:-test('../out/examples/summary').
 t5:-test('../out/examples/heaven').
 t6:-test('../out/examples/einstein').
 t7:-test('../out/examples/kafka').
 t8:-test('../out/examples/test').
-t9:-test('../out/examples/relativity').
+t9. %:-test('../out/examples/relativity').
 t10:-test('../out/examples/textrank').
 t11:-test('../out/examples/texas').
-t12:-test('../out/examples/heli').
+t12. %:-test('../out/examples/heli').
 t13:-test('../out/examples/red').
 t14:-test('../out/examples/covid').
 
-all_ts:- do((
+all_ts:- run((
   between(0,13,I),
-  atom_concat(t,I,G),
+  atomic_list_concat([t,I],G),
   writeln('-----------------------------------'),
   writeln(G),
   call(G)
   )).
+
+nb_setval(Var,Val):-
+   retractall(globals_(Var,_)),
+   assertz(globals_(Var,Val)).
+
+findnsols(_,X,G,Xs):-findall(X,G,Xs). % TODO
+
+distinct(Goal) :-
+    findall(Goal, Goal, List),
+    sort(List, Set),
+    member(Goal, Set).
+
+distinct(X,Goal) :-
+    findall(X, Goal, List),
+    sort(List, Set),
+    member(X, Set).
+
+memberchk(X,Xs):-member(X,Xs),!.
+
+exists_file(F):-file_exists(F).
+
+group_pairs_by_key([], []).
+group_pairs_by_key([M-N|T0], [M-[N|TN]|T]) :-
+  same_key(M, T0, TN, T1),
+  group_pairs_by_key(T1, T).
+
+same_key(M0, [M-N|T0], [N|TN], T) :-
+     M0 == M,
+     !,
+     same_key(M, T0, TN, T).
+     same_key(_, L, [], L).
+
+
+sum_list(Xs, Sum) :-
+      sum_list(Xs, 0, Sum).
+
+sum_list([], Sum0, Sum) :-
+      Sum = Sum0.
+
+sum_list([X|Xs], Sum0, Sum) :-
+      Sum1 is Sum0 + X,
+      sum_list(Xs, Sum1, Sum).
+
+intersection([], _, Set) :-
+      Set = [].
+intersection([X|T], L, Intersect) :-
+      (   memberchk(X, L)
+      ->  Intersect = [X|R],
+         intersection(T, L, R)
+      ;   intersection(T, L, Intersect)
+      ).
+
+reverse(Xs, Ys) :-
+     reverse(Xs, Ys, [], Ys).
+
+reverse([], [], Ys, Ys).
+reverse([X|Xs], [_|Bound], Rs, Ys) :-
+    reverse(Xs, Bound, [X|Rs], Ys).
+
+writeln(X):-write(X),nl.
+
+atomic_list_concat_(Xs,R):-
+   maplist(fix_string,Xs,Ys),
+   atomic_list_concat(Ys,R).
+
+
+fix_string([X|Xs],Rs):-!,
+    %print('!!!!'+[X|Xs]),
+    atom_codes(Rs,[X|Xs]).
+fix_string(X,X).
+
+
+must_be(list,[]).
+must_be(list,[_|_]).

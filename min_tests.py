@@ -1,5 +1,5 @@
 import os
-from deep_talk.qpro_minimal import *
+from deep_talk.min_qpro import *
 from deep_talk.query import qgo
 
 def ptest():

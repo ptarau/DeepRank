@@ -122,7 +122,7 @@ def t14():
 
 
 def all_ts():
-  for i in range(13, 15):
+  for i in range(0, 15):
     f = 't' + str(i)
     eval(f + "()")
 
@@ -131,6 +131,7 @@ def qtests() :
   t13()
 
 if __name__=='__main__' :
-  q1()
+  #q1()
+  all_ts()
   pass
 

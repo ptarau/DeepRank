@@ -112,7 +112,7 @@ def t14():
 
 
 def all_ts():
-  for i in range(0, 13):
+  for i in range(0, 15):
     f = 't' + str(i)
     eval(f + "()")
 

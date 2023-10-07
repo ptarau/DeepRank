@@ -122,6 +122,7 @@ def qtests() :
 
 if __name__=='__main__' :
   #t1()
-  all_ts()
+  #all_ts()
+  qgo()
   pass
 
